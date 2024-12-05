@@ -73,6 +73,10 @@
 		box-shadow: $boxshadow;
 		border-radius: $br;	
 		max-width: 100%;
+		/* light mode */
+		@media (prefers-color-scheme: light) {
+			background: none;
+		}
 	}
 }
 
