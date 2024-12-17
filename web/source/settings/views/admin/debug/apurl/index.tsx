@@ -43,11 +43,9 @@ export default function ApURL() {
 				<div className="form-section-docs">
 					<h2>AP URL</h2>
 					<p>
-						Call the provided URL with a signed request, and return the
-						raw ActivityPub response in the <code>response_body</code> field.
+						向提供的 URL 发送一个已签名的请求，并返回原始的 ActivityPub 响应。
 						<br/>
-						Useful for debugging communication between instances, and
-						checking the shape of remote objects and actors.
+						用于调试实例之间的通信，并检查远程对象和演员的形态。
 					</p>
 				</div>
 				<TextInput
@@ -59,7 +57,7 @@ export default function ApURL() {
 				/>
 				<MutationButton
 					disabled={!urlField.value}
-					label="Send request"
+					label="发送请求"
 					result={apURLResult}
 				/>
 			</form>

@@ -31,10 +31,9 @@ import { AdminReport } from "../../../lib/types/report";
 export default function ReportsSearch() {
 	return (
 		<div className="reports-view">
-			<h1>Reports Search</h1>
+			<h1>搜索举报</h1>
 			<span>
-				You can use the form below to search through reports
-				created by, or directed towards, accounts on this instance.
+				你可以使用下面的表单搜索本站账户的举报。
 			</span>
 			<ReportSearchForm />
 		</div>
@@ -138,18 +137,18 @@ function ReportSearchForm() {
 			>
 				<Select
 					field={form.resolved}
-					label="Report status"
+					label="举报状态"
 					options={
 						<>
-							<option value="false">Unresolved only</option>
-							<option value="true">Resolved only</option>
-							<option value="">Any</option>
+							<option value="false">未处理</option>
+							<option value="true">已处理</option>
+							<option value="">全部</option>
 						</>
 					}
 				></Select>
 				<MutationButton
 					disabled={false}
-					label={"Search"}
+					label={"搜索"}
 					result={searchRes}
 				/>
 			</form>
@@ -161,7 +160,7 @@ function ReportSearchForm() {
 				itemToEntry={itemToEntry}
 				isError={searchRes.isError}
 				error={searchRes.error}
-				emptyMessage={<b>No reports found that match your query.</b>}
+				emptyMessage={<b>没有找到符合条件的举报。</b>}
 				prevNextLinks={searchRes.data?.links}
 			/>
 		</>
@@ -180,9 +179,9 @@ function ReportListEntry({ report, linkTo, backLocation }: ReportEntryProps) {
 	const from = report.account;
 	const target = report.target_account;
 	const comment = report.comment;
-	const status = report.action_taken ? "Resolved" : "Unresolved";
+	const status = report.action_taken ? "已处理" : "未处理";
 	const created = new Date(report.created_at).toLocaleString();
-	const title = `${status}. @${target.account.acct} was reported by @${from.account.acct} on ${created}. Reason: "${comment}"`;
+	const title = `${status}. @${target.account.acct} 被 @${from.account.acct} 举报于 ${created}. 原因: "${comment}"`;
 
 	return (
 		<span
@@ -204,7 +203,7 @@ function ReportListEntry({ report, linkTo, backLocation }: ReportEntryProps) {
 		>
 			<dl className="info-list">
 				<div className="info-list-entry">
-					<dt>Reported account:</dt>
+					<dt>被举报账户:</dt>
 					<dd className="text-cutoff">
 						<UsernameLozenge
 							account={target}
@@ -214,14 +213,14 @@ function ReportListEntry({ report, linkTo, backLocation }: ReportEntryProps) {
 				</div>
 				
 				<div className="info-list-entry">
-					<dt>Reported by:</dt>
+					<dt>举报人:</dt>
 					<dd className="text-cutoff reported-by">
 						<UsernameLozenge account={from} />
 					</dd>
 				</div>
 
 				<div className="info-list-entry">
-					<dt>Status:</dt>
+					<dt>举报状态:</dt>
 					<dd className="text-cutoff">
 						{ report.action_taken
 							? <>{status}</>
@@ -231,7 +230,7 @@ function ReportListEntry({ report, linkTo, backLocation }: ReportEntryProps) {
 				</div>
 
 				<div className="info-list-entry">
-					<dt>Reason:</dt>
+					<dt>举报原因:</dt>
 					<dd className="text-cutoff">
 						{ comment.length > 0
 							? <>{comment}</>
@@ -241,7 +240,7 @@ function ReportListEntry({ report, linkTo, backLocation }: ReportEntryProps) {
 				</div>
 
 				<div className="info-list-entry">
-					<dt>Created:</dt>
+					<dt>创建时间:</dt>
 					<dd className="text-cutoff">
 						<time dateTime={report.created_at}>{created}</time>
 					</dd>

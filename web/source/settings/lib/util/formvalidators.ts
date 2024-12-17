@@ -30,7 +30,7 @@ export function formDomainValidator(domain: string): string {
 	}
 
 	if (domain[domain.length-1] === ".") {
-		return "invalid domain";
+		return "无效的域名";
 	}
 
 	const valid = isValidDomain(domain, {
@@ -44,5 +44,5 @@ export function formDomainValidator(domain: string): string {
 		return "";
 	}
 
-	return "invalid domain";
+	return "无效的域名";
 }

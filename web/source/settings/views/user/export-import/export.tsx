@@ -85,25 +85,25 @@ export default function Export({ exportStats }: { exportStats: AccountExportStat
 	return (
 		<form className="export-data">
 			<div className="form-section-docs">
-				<h3>Export Data</h3>
+				<h3>导出数据</h3>
 				<a
-					href="https://docs.gotosocial.org/en/latest/user_guide/settings/#export"
+					href="https://docs.gotosocial.org/zh-cn/latest/user_guide/settings/#export"
 					target="_blank"
 					className="docslink"
 					rel="noreferrer"
 				>
-				Learn more about this section (opens in a new tab)
+				了解更多关于此部分的信息（在新标签页中打开）
 				</a>
 			</div>
 			
 			<div className="export-buttons-wrapper">
 				<div className="stats-and-button">
 					<span className="text-cutoff">
-						Following {exportStats.following_count} account{ exportStats.following_count !== 1 && "s" }
+						关注了 {exportStats.following_count} 个账户
 					</span>
 					<MutationButton
 						className="text-cutoff"
-						label="Download following.csv"
+						label="下载 following.csv"
 						type="button"
 						onClick={() => exportFollowing()}
 						result={exportFollowingResult}
@@ -113,11 +113,11 @@ export default function Export({ exportStats }: { exportStats: AccountExportStat
 				</div>
 				<div className="stats-and-button">
 					<span className="text-cutoff">
-						Followed by {exportStats.followers_count} account{ exportStats.followers_count !== 1 && "s" }
+						被 {exportStats.followers_count} 个账户关注
 					</span>
 					<MutationButton
 						className="text-cutoff"
-						label="Download followers.csv"
+						label="下载 followers.csv"
 						type="button"
 						onClick={() => exportFollowers()}
 						result={exportFollowersResult}
@@ -127,11 +127,11 @@ export default function Export({ exportStats }: { exportStats: AccountExportStat
 				</div>
 				<div className="stats-and-button">
 					<span className="text-cutoff">
-						Created {exportStats.lists_count} list{ exportStats.lists_count !== 1 && "s" }
+						创建了 {exportStats.lists_count} 个列表
 					</span>
 					<MutationButton
 						className="text-cutoff"
-						label="Download lists.csv"
+						label="下载 lists.csv"
 						type="button"
 						onClick={() => exportLists()}
 						result={exportListsResult}
@@ -141,11 +141,11 @@ export default function Export({ exportStats }: { exportStats: AccountExportStat
 				</div>
 				<div className="stats-and-button">
 					<span className="text-cutoff">
-						Blocking {exportStats.blocks_count} account{ exportStats.blocks_count !== 1 && "s" }
+						屏蔽了 {exportStats.blocks_count} 个账户
 					</span>
 					<MutationButton
 						className="text-cutoff"
-						label="Download blocks.csv"
+						label="下载 blocks.csv"
 						type="button"
 						onClick={() => exportBlocks()}
 						result={exportBlocksResult}
@@ -155,11 +155,11 @@ export default function Export({ exportStats }: { exportStats: AccountExportStat
 				</div>
 				<div className="stats-and-button">
 					<span className="text-cutoff">
-						Muting {exportStats.mutes_count} account{ exportStats.mutes_count !== 1 && "s" }
+						静音了 {exportStats.mutes_count} 个账户
 					</span>
 					<MutationButton
 						className="text-cutoff"
-						label="Download mutes.csv"
+						label="下载 mutes.csv"
 						type="button"
 						onClick={() => exportMutes()}
 						result={exportMutesResult}

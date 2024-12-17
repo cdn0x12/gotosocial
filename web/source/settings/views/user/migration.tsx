@@ -42,21 +42,18 @@ export default function UserMigration() {
 function UserMigrationForm({ data: profile }) {
 	return (
 		<>
-			<h2>Account Migration Settings</h2>
+			<h2>账户迁移设置</h2>
 			<p>
-				The following settings allow you to <strong>alias</strong> your account to
-				another account elsewhere, or to <strong>move</strong> to another account.
+				以下设置允许你设置<strong>账户别名</strong>，将你的账户链接到其他账户，或<strong>迁移</strong>到其他账户。
 			</p>
 			<p>
-				Account <strong>aliasing</strong> is harmless and reversible; you can
-				set and unset up to five account aliases as many times as you wish.
+				账户<strong>别名</strong>是安全的，可以随时设置和取消，最多可以设置五个账户别名。
 			</p>
 			<p>
-				The account <strong>move</strong> action, on the other
-				hand, has serious and irreversible consequences.
+				账户<strong>迁移</strong>操作会带来一系列的后果，请谨慎操作。
 			</p>
 			<p>
-				For more information on account migration, please see <a href="https://docs.gotosocial.org/en/latest/user_guide/settings/#migration" target="_blank" className="docslink" rel="noreferrer">the documentation</a>.
+				更多关于账户迁移的信息，请参阅<a href="https://docs.gotosocial.org/zh-cn/latest/user_guide/settings/#migration" target="_blank" className="docslink" rel="noreferrer">文档</a>。
 			</p>
 			<AliasForm data={profile} />
 			<MoveForm data={profile} />
@@ -82,14 +79,14 @@ function AliasForm({ data: profile }) {
 	return (
 		<form className="user-migration-alias" onSubmit={submitForm}>
 			<div className="form-section-docs">
-				<h3>Alias Account</h3>
+				<h3>账户别名</h3>
 				<a
-					href="https://docs.gotosocial.org/en/latest/user_guide/migration"
+					href="https://docs.gotosocial.org/zh-cn/latest/user_guide/migration"
 					target="_blank"
 					className="docslink"
 					rel="noreferrer"
 				>
-					Learn more about account migration (opens in a new tab)
+					了解更多关于账户迁移的信息（在新标签页中打开）
 				</a>
 			</div>
 			<AlsoKnownAsURIs
@@ -97,7 +94,7 @@ function AliasForm({ data: profile }) {
 			/>
 			<MutationButton
 				disabled={false}
-				label="Save account aliases"
+				label="保存账户别名"
 				result={result}
 			/>
 		</form>
@@ -132,7 +129,7 @@ function AlsoKnownAsURI({ index, data }) {
 
 	return (
 		<TextInput
-			label={`Alias #${index+1}`}
+			label={`别名 #${index+1}`}
 			field={form.alsoKnownAsURI}
 			placeholder={`https://example.org/users/my_other_account_${index+1}`}
 			type="url"
@@ -160,37 +157,35 @@ function MoveForm({ data: profile }) {
 	return (
 		<form className="user-migration-move" onSubmit={submitForm}>
 			<div className="form-section-docs">
-				<h3>Move Account</h3>
+				<h3>迁移账户</h3>
 				<p>
-						For a move to be successful, you must have already set an alias from the
-						target account back to the account you're moving from (ie., this account),
-						using the settings panel of the instance on which the target account resides.
-						To do this, provide the following details to the other instance: 
+					要成功迁移账户，你必须先设置账户别名，将迁移的目标账户链接到你当前的账户（即你正在迁移的账户），
+					这需要在目标账户所在实例的设置面板中进行。为此，请提供以下信息： 
 				</p>
 				<dl className="migration-details">
 					<div>
-						<dt>Account handle/username:</dt>
+						<dt>账户名/用户名:</dt>
 						<dd>@{profile.acct}@{url.host}</dd>
 					</div>
 					<div>
-						<dt>Account URI:</dt>
+						<dt>账户URI:</dt>
 						<dd>{urlStr}/users/{profile.username}</dd>
 					</div>
 				</dl>
 				<br/>
 				<a
-					href="https://docs.gotosocial.org/en/latest/user_guide/migration"
+					href="https://docs.gotosocial.org/zh-cn/latest/user_guide/migration"
 					target="_blank"
 					className="docslink"
 					rel="noreferrer"
 				>
-					Learn more about account migration (opens in a new tab)
+					了解更多关于账户迁移的信息（在新标签页中打开）
 				</a>
 			</div>
 			<TextInput
 				disabled={false}
 				field={form.movedToURI}
-				label="Move target URI"
+				label="迁移目标URI"
 				placeholder="https://example.org/users/my_new_account"
 				type="url"
 				pattern="(http|https):\/\/.+"
@@ -201,11 +196,11 @@ function MoveForm({ data: profile }) {
 				autoComplete="current-password"
 				name="password"
 				field={form.password}
-				label="Current account password"
+				label="当前账户密码"
 			/>
 			<MutationButton
 				disabled={false}
-				label="Confirm account move"
+				label="确认账户迁移"
 				result={result}
 			/>
 		</form>

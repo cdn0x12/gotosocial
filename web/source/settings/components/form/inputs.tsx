@@ -101,7 +101,7 @@ export function FileInput({ label, field, ...props }: FileInputProps) {
 				{label}
 			</label>
 			<label className="label-button" htmlFor={id}>
-				<div className="file-input button">Browse</div>
+				<div className="file-input button">浏览</div>
 			</label>
 			<input
 				id={id}

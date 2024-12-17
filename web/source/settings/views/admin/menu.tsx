@@ -51,7 +51,7 @@ export default function AdminMenu() {
 	
 	return (
 		<MenuItem
-			name="Administration"
+			name="管理"
 			itemUrl="admin"
 			defaultChild="actions"
 			permissions={permissions}
@@ -72,18 +72,18 @@ export default function AdminMenu() {
 function AdminInstanceMenu() {
 	return (
 		<MenuItem
-			name="Instance"
+			name="实例"
 			itemUrl="instance"
 			defaultChild="settings"
 			icon="fa-sitemap"
 		>
 			<MenuItem
-				name="Settings"
+				name="设置"
 				itemUrl="settings"
 				icon="fa-sliders"
 			/>
 			<MenuItem
-				name="Rules"
+				name="规则"
 				itemUrl="rules"
 				icon="fa-dot-circle-o"
 			/>
@@ -94,23 +94,23 @@ function AdminInstanceMenu() {
 function AdminActionsMenu() {
 	return (
 		<MenuItem
-			name="Actions"
+			name="操作"
 			itemUrl="actions"
 			defaultChild="email"
 			icon="fa-bolt"
 		>
 			<MenuItem
-				name="Email"
+				name="邮件"
 				itemUrl="email"
 				icon="fa-email-bulk"
 			/>
 			<MenuItem
-				name="Media"
+				name="媒体"
 				itemUrl="media"
 				icon="fa-photo"
 			/>
 			<MenuItem
-				name="Keys"
+				name="密钥"
 				itemUrl="keys"
 				icon="fa-key-modern"
 			/>
@@ -121,18 +121,18 @@ function AdminActionsMenu() {
 function AdminEmojisMenu() {
 	return (
 		<MenuItem
-			name="Custom Emoji"
+			name="自定义表情"
 			itemUrl="emojis"
 			defaultChild="local"
 			icon="fa-smile-o"
 		>
 			<MenuItem
-				name="Local"
+				name="本站"
 				itemUrl="local"
 				icon="fa-home"
 			/>
 			<MenuItem
-				name="Remote"
+				name="外站"
 				itemUrl="remote"
 				icon="fa-cloud"
 			/>
@@ -143,18 +143,18 @@ function AdminEmojisMenu() {
 function AdminHTTPHeaderPermissionsMenu() {
 	return (
 		<MenuItem
-			name="HTTP Header Permissions"
+			name="HTTP 请求头权限"
 			itemUrl="http-header-permissions"
 			defaultChild="blocks"
 			icon="fa-hubzilla"
 		>
 			<MenuItem
-				name="Blocks"
+				name="屏蔽"
 				itemUrl="blocks"
 				icon="fa-close"
 			/>
 			<MenuItem
-				name="Allows"
+				name="放行"
 				itemUrl="allows"
 				icon="fa-check"
 			/>
@@ -172,7 +172,7 @@ function AdminDebugMenu() {
 	
 	return (
 		<MenuItem
-			name="Debug"
+			name="调试"
 			itemUrl="debug"
 			defaultChild="apurl"
 			icon="fa-bug"
@@ -183,7 +183,7 @@ function AdminDebugMenu() {
 				icon="fa-file-code-o"
 			/>
 			<MenuItem
-				name="Caches"
+				name="缓存"
 				itemUrl="caches"
 				icon="fa-archive"
 			/>

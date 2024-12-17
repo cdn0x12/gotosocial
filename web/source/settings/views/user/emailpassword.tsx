@@ -30,7 +30,7 @@ import { useInstanceV1Query } from "../../lib/query/gts-api";
 export default function EmailPassword() {
 	return (
 		<>
-			<h1>Email & Password Settings</h1>
+			<h1>邮箱和密码设置</h1>
 			<EmailChange />
 			<PasswordChange />
 		</>
@@ -61,7 +61,7 @@ function PasswordChangeForm({ oidcEnabled }: { oidcEnabled?: boolean }) {
 		newPassword: useTextInput("new_password", {
 			validator(val) {
 				if (val != "" && val == form.oldPassword.value) {
-					return "New password same as old password";
+					return "新密码与旧密码相同";
 				}
 				return "";
 			}
@@ -71,7 +71,7 @@ function PasswordChangeForm({ oidcEnabled }: { oidcEnabled?: boolean }) {
 	const verifyNewPassword = useTextInput("verifyNewPassword", {
 		validator(val) {
 			if (val != "" && val != form.newPassword.value) {
-				return "Passwords do not match";
+				return "密码不匹配";
 			}
 			return "";
 		}
@@ -82,21 +82,21 @@ function PasswordChangeForm({ oidcEnabled }: { oidcEnabled?: boolean }) {
 	return (
 		<form className="change-password" onSubmit={submitForm}>
 			<div className="form-section-docs">
-				<h3>Change Password</h3>
+				<h3>更改密码</h3>
 				{ oidcEnabled && <p>
-					This instance is running with OIDC as its authorization + identity provider.
+					本实例使用OIDC作为授权和身份提供者。
 					<br/>
-					This means <strong>you cannot change your password using this settings panel</strong>.
+					这意味着<strong>你不能使用这个设置面板更改你的密码</strong>。
 					<br/>
-					To change your password, you should instead contact your OIDC provider.
+					要更改你的密码，你应该联系你的OIDC提供者。
 				</p> }
 				<a
-					href="https://docs.gotosocial.org/en/latest/user_guide/settings/#password-change"
+					href="https://docs.gotosocial.org/zh-cn/latest/user_guide/settings/#password-change"
 					target="_blank"
 					className="docslink"
 					rel="noreferrer"
 				>
-					Learn more about this (opens in a new tab)
+					了解更多关于此设置的信息（在新标签页中打开）
 				</a>
 			</div>
 			
@@ -104,7 +104,7 @@ function PasswordChangeForm({ oidcEnabled }: { oidcEnabled?: boolean }) {
 				type="password"
 				name="password"
 				field={form.oldPassword}
-				label="Current password"
+				label="当前密码"
 				autoComplete="current-password"
 				disabled={oidcEnabled}
 			/>
@@ -112,7 +112,7 @@ function PasswordChangeForm({ oidcEnabled }: { oidcEnabled?: boolean }) {
 				type="password"
 				name="newPassword"
 				field={form.newPassword}
-				label="New password"
+				label="新密码"
 				autoComplete="new-password"
 				disabled={oidcEnabled}
 			/>
@@ -120,12 +120,12 @@ function PasswordChangeForm({ oidcEnabled }: { oidcEnabled?: boolean }) {
 				type="password"
 				name="confirmNewPassword"
 				field={verifyNewPassword}
-				label="Confirm new password"
+				label="确认新密码"
 				autoComplete="new-password"
 				disabled={oidcEnabled}
 			/>
 			<MutationButton
-				label="Change password"
+				label="更改密码"
 				result={result}
 				disabled={oidcEnabled ?? false}
 			/>
@@ -179,11 +179,11 @@ function EmailChangeForm({user, oidcEnabled}: { user: User, oidcEnabled?: boolea
 				}
 
 				if (value.toLowerCase() === user.email?.toLowerCase()) {
-					return "cannot change to your existing address";
+					return "不能更改为现有的邮箱";
 				}
 
 				if (value.toLowerCase() === user.unconfirmed_email?.toLowerCase()) {
-					return "you already have a pending email address change to this address";
+					return "你已经更改到了这个地址，但还没有确认";
 				}
 
 				return "";
@@ -196,23 +196,22 @@ function EmailChangeForm({user, oidcEnabled}: { user: User, oidcEnabled?: boolea
 	return (
 		<form className="change-email" onSubmit={submitForm}>
 			<div className="form-section-docs">
-				<h3>Change Email</h3>
+				<h3>更改邮箱</h3>
 				{ oidcEnabled && <p>
-					This instance is running with OIDC as its authorization + identity provider.
+					本实例使用OIDC作为授权和身份提供者。
 					<br/>
-					You can still change your email address using this settings panel,
-					but it will only affect which address GoToSocial uses to contact you,
-					not the email address you use to log in.
+					你可以使用这个设置面板更改你的邮箱，但只会影响GoToSocial用来联系你的邮箱，
+					不会影响你用来登录的邮箱。
 					<br/>
-					To change the email address you use to log in, contact your OIDC provider.
+					要更改你用来登录的邮箱，请联系你的OIDC提供者。
 				</p> }
 				<a
-					href="https://docs.gotosocial.org/en/latest/user_guide/settings/#email-change"
+					href="https://docs.gotosocial.org/zh-cn/latest/user_guide/settings/#email-change"
 					target="_blank"
 					className="docslink"
 					rel="noreferrer"
 				>
-					Learn more about this (opens in a new tab)
+					了解更多关于此设置的信息（在新标签页中打开）
 				</a>
 			</div>
 
@@ -220,11 +219,11 @@ function EmailChangeForm({user, oidcEnabled}: { user: User, oidcEnabled?: boolea
 				<div className="info">
 					<i className="fa fa-fw fa-info-circle" aria-hidden="true"></i>
 					<b>
-						You currently have a pending email address
-						change to the address: {user.unconfirmed_email}
+						你已发起邮箱地址更改，请检查你的邮箱收件箱。
 						<br />
-						To confirm {user.unconfirmed_email} as your new
-						address for this account, please check your email inbox.
+						你当前有一个待确认的邮箱地址更改，地址为：{user.unconfirmed_email}
+						<br />
+						要将{user.unconfirmed_email}确认为你的新邮箱地址，请检查你的邮箱收件箱。
 					</b>
 				</div>
 			</> }
@@ -233,7 +232,7 @@ function EmailChangeForm({user, oidcEnabled}: { user: User, oidcEnabled?: boolea
 				type="email"
 				name="current-email"
 				field={form.currentEmail}
-				label="Current email address"
+				label="当前邮箱地址"
 				autoComplete="none"
 				disabled={true}
 			/>
@@ -242,7 +241,7 @@ function EmailChangeForm({user, oidcEnabled}: { user: User, oidcEnabled?: boolea
 				type="password"
 				name="password"
 				field={form.password}
-				label="Current password"
+				label="当前密码"
 				autoComplete="current-password"
 			/>
 
@@ -250,13 +249,13 @@ function EmailChangeForm({user, oidcEnabled}: { user: User, oidcEnabled?: boolea
 				type="email"
 				name="new-email"
 				field={form.newEmail}
-				label="New email address"
+				label="新邮箱地址"
 				autoComplete="none"
 			/>
 			
 			<MutationButton
 				disabled={!form.password || !form.newEmail || !form.newEmail.valid}
-				label="Change email address"
+				label="更改邮箱地址"
 				result={result}
 			/>
 		</form>

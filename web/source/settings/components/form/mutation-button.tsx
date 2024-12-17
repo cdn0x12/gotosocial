@@ -63,7 +63,7 @@ export default function MutationButton({
 			>
 				<i className={`fa fa-fw${iconClass}`} aria-hidden="true"></i>
 				{(targetsThisButton && result.isLoading)
-					? "Processing..."
+					? "处理中..."
 					: label
 				}
 			</button>

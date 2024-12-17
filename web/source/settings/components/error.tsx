@@ -25,11 +25,12 @@ function ErrorFallback({ error, resetErrorBoundary }) {
 	return (
 		<div className="error">
 			<p>
-				{"An error occured, please report this on the "}
-				<a href="https://github.com/superseriousbusiness/gotosocial/issues">GoToSocial issue tracker</a>
-				{" or "}
-				<a href="https://matrix.to/#/#gotosocial-help:superseriousbusiness.org">Matrix support room</a>.
-				<br />Include the details below:
+				{"发生错误,请在"}
+				<a href="https://github.com/superseriousbusiness/gotosocial/issues">GoToSocial 问题追踪看板</a>
+				{"或"}
+				<a href="https://matrix.to/#/#gotosocial-help:superseriousbusiness.org">Matrix 支持聊天室</a>
+				{"上报告此问题。"}
+				<br />{"报告时请包含以下详细信息:"}
 			</p>
 			<div className="details">
 				<pre>
@@ -40,7 +41,7 @@ function ErrorFallback({ error, resetErrorBoundary }) {
 				</pre>
 			</div>
 			<p>
-				<button onClick={resetErrorBoundary}>Try again</button> or <a href="">refresh the page</a>
+				<button onClick={resetErrorBoundary}>重试</button> 或 <a href="">刷新页面</a>
 			</p>
 		</div>
 	);
@@ -115,7 +116,7 @@ function Error({ error, reset }: ErrorProps) {
 					role="button"
 					tabIndex={0}
 				>
-					<span>Dismiss</span>
+					<span>关闭</span>
 					<i className="fa fa-fw fa-close" aria-hidden="true" />
 				</span>
 			}

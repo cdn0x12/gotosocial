@@ -36,11 +36,11 @@ export function FakeStatus({ children }) {
 					<a style={{margin: 0}}>
 						<img className="avatar" src={account.avatar} alt="" />
 						<dl className="author-strap">
-							<dt className="sr-only">Display name</dt>
+							<dt className="sr-only">昵称</dt>
 							<dd className="displayname text-cutoff">
 								{account.display_name.trim().length > 0 ? account.display_name : account.username}
 							</dd>
-							<dt className="sr-only">Username</dt>
+							<dt className="sr-only">用户名</dt>
 							<dd className="username text-cutoff">@{account.username}</dd>
 						</dl>
 					</a>
@@ -72,9 +72,9 @@ export function Status({ status }: { status: StatusType }) {
 				target="_blank"
 				className="status-link"
 				data-nosnippet
-				title="Open this status (opens in new tab)"
+				title="打开此嘟文（在新标签页中打开）"
 			>
-				Open this status (opens in new tab)
+				打开此嘟文（在新标签页中打开）
 			</a>
 		</article>
 	);
@@ -89,22 +89,22 @@ function StatusHeader({ status }: { status: StatusType }) {
 				<a
 					href={author.url}
 					rel="author"
-					title="Open profile"
+					title="打开个人主页"
 					target="_blank"
 				>
 					<img
 						className="avatar"
 						aria-hidden="true"
 						src={author.avatar}
-						alt={`Avatar for ${author.username}`}
-						title={`Avatar for ${author.username}`}
+						alt={`${author.username} 的头像`}
+						title={`${author.username} 的头像`}
 					/>
 					<div className="author-strap">
 						<span className="displayname text-cutoff">{author.display_name}</span>
 						<span className="sr-only">,</span>
 						<span className="username text-cutoff">@{author.acct}</span>
 					</div>
-					<span className="sr-only">(open profile)</span>
+					<span className="sr-only">（打开个人主页）</span>
 				</a>
 			</address>
 		</header>
@@ -114,7 +114,7 @@ function StatusHeader({ status }: { status: StatusType }) {
 function StatusBody({ status }: { status: StatusType }) {
 	let content: string;
 	if (status.content.length === 0) {
-		content = "[no content set]";
+		content = "[未设置内容]";
 	} else {
 		// HTML has already been through
 		// the instance sanitizer by now,
@@ -132,16 +132,16 @@ function StatusBody({ status }: { status: StatusType }) {
 					>
 						{ status.spoiler_text
 							? status.spoiler_text + " "
-							: "[no content warning set] "
+							: "[未设置内容警告] "
 						}
 					</span>
 					<span
 						className="button"
 						role="button"
 						tabIndex={0}
-						aria-label="Toggle content visibility"
+						aria-label="切换内容可见性"
 					>
-						Toggle content visibility
+						切换内容可见性
 					</span>
 				</summary>
 				<div
@@ -160,7 +160,7 @@ function StatusMedia({ status }: { status: StatusType }) {
 	}
 
 	const count = status.media_attachments.length;
-	const aria_label = count === 1 ? "1 attachment" : `${count} attachments`;
+	const aria_label = count === 1 ? "1 个附件" : `${count} 个附件`;
 	const oddOrEven = count % 2 === 0 ? "even" : "odd";
 	const single = count === 1 ? " single" : "";
 
@@ -187,8 +187,8 @@ function StatusMediaEntry({ media }: { media: MediaAttachment }) {
 		<div className="media-wrapper">
 			<details className="image-spoiler media-spoiler">
 				<summary>
-					<div className="show sensitive button" aria-hidden="true">Show media</div>
-					<span className="eye button" role="button" tabIndex={0} aria-label="Toggle show media">
+					<div className="show sensitive button" aria-hidden="true">显示媒体</div>
+					<span className="eye button" role="button" tabIndex={0} aria-label="媒体展示开关">
 						<i className="hide fa fa-fw fa-eye-slash" aria-hidden="true"></i>
 						<i className="show fa fa-fw fa-eye" aria-hidden="true"></i>
 					</span>
@@ -224,7 +224,7 @@ function StatusFooter({ status }: { status: StatusType }) {
 			<dl className="status-stats">
 				<div className="stats-grouping">
 					<div className="stats-item published-at text-cutoff">
-						<dt className="sr-only">Published</dt>
+						<dt className="sr-only">发布于</dt>
 						<dd>
 							<time dateTime={status.created_at}>
 								{ new Date(status.created_at).toLocaleString() }
@@ -233,7 +233,7 @@ function StatusFooter({ status }: { status: StatusType }) {
 					</div>
 				</div>
 				<div className="stats-item language">
-					<dt className="sr-only">Language</dt>
+					<dt className="sr-only">语言</dt>
 					<dd>{status.language}</dd>
 				</div>
 			</dl>

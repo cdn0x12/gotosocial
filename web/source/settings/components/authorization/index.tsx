@@ -47,9 +47,9 @@ export function Authorization({ App }) {
 
 		let loadingInfo = "";
 		if (loginState == "callback") {
-			loadingInfo = "Processing OAUTH callback.";
+			loadingInfo = "正在处理 OAUTH 回调。";
 		} else if (loginState == "login") {
-			loadingInfo = "Verifying stored login.";
+			loadingInfo = "正在验证已保存的登录信息。";
 		}
 
 		content = (
@@ -69,7 +69,7 @@ export function Authorization({ App }) {
 		content = (
 			<div>
 				<Error error={error} />
-				You can attempt logging in again below:
+				您可以再次尝试登录:
 			</div>
 		);
 	}
@@ -79,7 +79,7 @@ export function Authorization({ App }) {
 	} else {
 		return (
 			<section className="oauth">
-				<h1>GoToSocial Settings</h1>
+				<h1>GoToSocial 设置</h1>
 				{content}
 				{showLogin && <Login />}
 			</section>

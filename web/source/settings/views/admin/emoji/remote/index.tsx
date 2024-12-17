@@ -38,7 +38,7 @@ export default function RemoteEmoji() {
 
 	return (
 		<>
-			<h1>Custom Emoji (remote)</h1>
+			<h1>外站自定义表情</h1>
 			{error && <Error error={error} />}
 			{isLoading ? <Loading /> : <StealThisLook emojiCodes={emojiCodes} />}
 		</>

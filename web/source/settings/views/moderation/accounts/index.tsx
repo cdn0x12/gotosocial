@@ -24,13 +24,11 @@ export default function AccountsSearch({ }) {
 	return (
 		<div className="accounts-view">
 			<div className="form-section-docs">
-				<h1>Accounts Search</h1>
+				<h1>搜索账户</h1>
 				<p>
-					You can perform actions on an account by clicking
-					its name in a report, or by searching for the account
-					using the form below and clicking on its name.
+					你可以通过点击举报中的账户名称或使用下面的表单搜索账户，然后点击其名称。
 					<br/>
-					All fields in the below form are optional.
+					以下表单中的所有字段都是可选的。
 				</p>
 			</div>
 			<AccountSearchForm />

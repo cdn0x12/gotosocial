@@ -22,6 +22,6 @@ import { Link } from "wouter";
 
 export default function BackButton({ to }) {
 	return (
-		<Link className="button" to={to}>&lt; back</Link>
+		<Link className="button" to={to}>← 返回</Link>
 	);
 }

@@ -104,8 +104,8 @@ export function PageableList<T>({
 			{ content }
 			{ prevNextLinks &&
 				<div className="prev-next">
-					{ prevClick && <button onClick={prevClick}>Previous page</button> }
-					{ nextClick && <button onClick={nextClick}>Next page</button> }
+					{ prevClick && <button onClick={prevClick}>上一页</button> }
+					{ nextClick && <button onClick={nextClick}>下一页</button> }
 				</div>
 			}
 		</div>

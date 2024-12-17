@@ -45,7 +45,7 @@ export default function ModerationMenu() {
 	
 	return (
 		<MenuItem
-			name="Moderation"
+			name="审核"
 			itemUrl="moderation"
 			defaultChild="reports"
 			permissions={permissions}
@@ -64,7 +64,7 @@ export default function ModerationMenu() {
 function ModerationReportsMenu() {
 	return (
 		<MenuItem
-			name="Reports"
+			name="举报"
 			itemUrl="reports"
 			icon="fa-flag"
 		/>
@@ -74,18 +74,18 @@ function ModerationReportsMenu() {
 function ModerationAccountsMenu() {
 	return (
 		<MenuItem
-			name="Accounts"
+			name="账户"
 			itemUrl="accounts"
 			defaultChild="search"
 			icon="fa-users"
 		>
 			<MenuItem
-				name="Search"
+				name="搜索"
 				itemUrl="search"
 				icon="fa-list"
 			/>
 			<MenuItem
-				name="Pending"
+				name="待审核"
 				itemUrl="pending"
 				icon="fa-question"
 			/>
@@ -96,56 +96,56 @@ function ModerationAccountsMenu() {
 function ModerationDomainPermsMenu() {
 	return (
 		<MenuItem
-			name="Domain Permissions"
+			name="域名权限"
 			itemUrl="domain-permissions"
 			defaultChild="blocks"
 			icon="fa-hubzilla"
 		>
 			<MenuItem
-				name="Blocks"
+				name="屏蔽"
 				itemUrl="blocks"
 				icon="fa-close"
 			/>
 			<MenuItem
-				name="Allows"
+				name="允许"
 				itemUrl="allows"
 				icon="fa-check"
 			/>
 			<MenuItem
-				name="Import/Export"
+				name="导入/导出"
 				itemUrl="import-export"
 				icon="fa-floppy-o"
 			/>
 			<MenuItem
-				name="Drafts"
+				name="草案"
 				itemUrl="drafts"
 				defaultChild="search"
 				icon="fa-pencil"
 			>
 				<MenuItem
-					name="Search"
+					name="搜索"
 					itemUrl="search"
 					icon="fa-list"
 				/>
 				<MenuItem
-					name="New draft"
+					name="新建草案"
 					itemUrl="new"
 					icon="fa-plus"
 				/>
 			</MenuItem>
 			<MenuItem
-				name="Excludes"
+				name="例外"
 				itemUrl="excludes"
 				defaultChild="search"
 				icon="fa-minus-square"
 			>
 				<MenuItem
-					name="Search"
+					name="搜索"
 					itemUrl="search"
 					icon="fa-list"
 				/>
 				<MenuItem
-					name="New exclude"
+					name="新建例外"
 					itemUrl="new"
 					icon="fa-plus"
 				/>

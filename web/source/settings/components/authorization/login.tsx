@@ -41,13 +41,13 @@ export default function Login({ }) {
 	if (result.isLoading) {
 		return (
 			<div>
-				<Loading /> Checking instance.
+				<Loading /> 正在检查实例。
 			</div>
 		);
 	} else if (result.isSuccess) {
 		return (
 			<div>
-				<Loading /> Redirecting to instance authorization page.
+				<Loading /> 正在转到到授权页。
 			</div>
 		);
 	}
@@ -56,11 +56,11 @@ export default function Login({ }) {
 		<form onSubmit={formSubmit}>
 			<TextInput
 				field={form.instance}
-				label="Instance"
+				label="实例"
 				name="instance"
 			/>
 			<MutationButton
-				label="Login"
+				label="登录"
 				result={result}
 				disabled={false}
 			/>

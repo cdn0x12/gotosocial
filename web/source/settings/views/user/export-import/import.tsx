@@ -43,43 +43,43 @@ export default function Import() {
 	return (
 		<form className="import-data" onSubmit={submitForm}>
 			<div className="form-section-docs">
-				<h3>Import Data</h3>
+				<h3>导入数据</h3>
 				<a
-					href="https://docs.gotosocial.org/en/latest/user_guide/settings/#import"
+					href="https://docs.gotosocial.org/zh-cn/latest/user_guide/settings/#import"
 					target="_blank"
 					className="docslink"
 					rel="noreferrer"
 				>
-					Learn more about this section (opens in a new tab)
+					了解更多关于此部分的信息（在新标签页中打开）
 				</a>
 			</div>
 			
 			<FileInput
-				label="CSV data file"
+				label="CSV 数据文件"
 				field={form.data}
 				accept="text/csv"
 			/>
 
 			<Select
 				field={form.type}
-				label="Import type"
+				label="导入类型"
 				options={
 					<>
-						<option value="">- Select import type -</option>
-						<option value="following">Following list</option>
-						<option value="blocks">Blocked accounts list</option>
+						<option value="">- 选择导入类型 -</option>
+						<option value="following">关注列表</option>
+						<option value="blocks">账户屏蔽列表</option>
 					</>
 				}>
 			</Select>
 
 			<Select
 				field={form.mode}
-				label="Import mode"
+				label="导入模式"
 				options={
 					<>
-						<option value="">- Select import mode -</option>
-						<option value="merge">Merge (recommended): add to existing records</option>
-						<option value="overwrite">Overwrite: replace existing records</option>
+						<option value="">- 选择导入模式 -</option>
+						<option value="merge">合并（推荐）：添加到现有记录</option>
+						<option value="overwrite">覆盖：替换现有记录</option>
 					</>
 				}>
 			</Select>
@@ -90,7 +90,7 @@ export default function Import() {
 					!form.type.value ||
 					!form.mode.value
 				}
-				label="Import"
+				label="导入"
 				result={result}
 			/>
 		</form>

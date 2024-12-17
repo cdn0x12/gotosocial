@@ -31,7 +31,7 @@ import FormWithData from "../../../lib/form/form-with-data";
 export default function InstanceRules() {
 	return (
 		<>
-			<h1>Instance Rules</h1>
+			<h1>实例规则</h1>
 			<FormWithData
 				dataQuery={useInstanceRulesQuery}
 				DataForm={InstanceRulesForm}
@@ -63,11 +63,11 @@ function InstanceRulesForm({ data: rules }: { data: MappedRules }) {
 			</ol>
 			<TextArea
 				field={newRule}
-				label="New instance rule"
+				label="新建实例规则"
 			/>
 			<MutationButton
 				disabled={newRule.value === undefined || newRule.value.length === 0}
-				label="Add rule"
+				label="添加规则"
 				result={result}
 			/>
 		</form>

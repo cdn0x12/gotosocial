@@ -29,37 +29,37 @@ import React from "react";
 export default function UserMenu() {	
 	return (
 		<MenuItem
-			name="User"
+			name="用户"
 			itemUrl="user"
 			defaultChild="profile"
 		>
 			<MenuItem
-				name="Profile"
+				name="个人资料"
 				itemUrl="profile"
 				icon="fa-user"
 			/>
 			<MenuItem
-				name="Posts"
+				name="嘟文"
 				itemUrl="posts"
 				icon="fa-paper-plane"
 			/>
 			<MenuItem
-				name="Interaction Requests"
+				name="互动请求"
 				itemUrl="interaction_requests"
 				icon="fa-commenting-o"
 			/>
 			<MenuItem
-				name="Email & Password"
+				name="邮箱和密码"
 				itemUrl="emailpassword"
 				icon="fa-user-secret"
 			/>
 			<MenuItem
-				name="Migration"
+				name="迁移"
 				itemUrl="migration"
 				icon="fa-exchange"
 			/>
 			<MenuItem
-				name="Export & Import"
+				name="导出和导入"
 				itemUrl="export-import"
 				icon="fa-floppy-o"
 			/>

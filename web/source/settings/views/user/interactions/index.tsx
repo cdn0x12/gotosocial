@@ -24,10 +24,9 @@ export default function InteractionRequests() {
 	return (
 		<div className="interaction-requests-view">
 			<div className="form-section-docs">
-				<h1>Interaction Requests</h1>
+				<h1>互动请求</h1>
 				<p>
-					On this page you can search through interaction requests
-					targeting your statuses, and approve or reject them.
+					在这里，您可以搜索有关您嘟嘟的互动请求，并批准或拒绝它们。
 				</p>
 			</div>
 			<InteractionRequestsSearchForm />

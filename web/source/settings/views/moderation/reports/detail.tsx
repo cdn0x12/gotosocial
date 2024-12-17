@@ -39,7 +39,7 @@ export default function ReportDetail({ }) {
 
 	return (
 		<div className="report-detail">
-			<h1><BackButton to={backLocation}/> Report Details</h1>
+			<h1><BackButton to={backLocation}/> 举报详情</h1>
 			<FormWithData
 				dataQuery={useGetReportQuery}
 				queryArg={params.reportId}
@@ -91,13 +91,13 @@ function ReportBasicInfo({ report, baseUrl, location }: ReportSectionProps) {
 	const from = report.account;
 	const target = report.target_account;
 	const comment = report.comment;
-	const status = report.action_taken ? "Resolved" : "Unresolved";
+	const status = report.action_taken ? "已处理" : "未处理";
 	const created = new Date(report.created_at).toLocaleString();
 
 	return (
 		<dl className="info-list overview">
 			<div className="info-list-entry">
-				<dt>Reported account</dt>
+				<dt>举报账户</dt>
 				<dd>
 					<UsernameLozenge
 						account={target}
@@ -108,7 +108,7 @@ function ReportBasicInfo({ report, baseUrl, location }: ReportSectionProps) {
 			</div>
 		
 			<div className="info-list-entry">
-				<dt>Reported by</dt>
+				<dt>举报人</dt>
 				<dd>
 					<UsernameLozenge
 						account={from}
@@ -119,7 +119,7 @@ function ReportBasicInfo({ report, baseUrl, location }: ReportSectionProps) {
 			</div>
 
 			<div className="info-list-entry">
-				<dt>Status</dt>
+				<dt>举报状态</dt>
 				<dd>
 					{ report.action_taken
 						? <>{status}</>
@@ -129,29 +129,29 @@ function ReportBasicInfo({ report, baseUrl, location }: ReportSectionProps) {
 			</div>
 
 			<div className="info-list-entry">
-				<dt>Reason</dt>
+				<dt>举报原因</dt>
 				<dd>
 					{ comment.length > 0
 						? <>{comment}</>
-						: <i>none provided</i>
+						: <i>未提供</i>
 					}
 				</dd>
 			</div>
 
 			<div className="info-list-entry">
-				<dt>Created</dt>
+				<dt>创建时间</dt>
 				<dd>
 					<time dateTime={report.created_at}>{created}</time>
 				</dd>
 			</div>
 
 			<div className="info-list-entry">
-				<dt>Category</dt>
+				<dt>举报分类</dt>
 				<dd>{ report.category }</dd>
 			</div>
 
 			<div className="info-list-entry">
-				<dt>Forwarded</dt>
+				<dt>是否转发到对应站点</dt>
 				<dd>{ yesOrNo(report.forwarded) }</dd>
 			</div>
 		</dl>
@@ -168,10 +168,10 @@ function ReportHistory({ report, baseUrl, location }: ReportSectionProps) {
 	
 	return (
 		<>
-			<h3>Moderation History</h3>
+			<h3>审核记录</h3>
 			<dl className="info-list">
 				<div className="info-list-entry">
-					<dt>Handled by</dt>
+					<dt>处理人</dt>
 					<dd>
 						<UsernameLozenge
 							account={handled_by}
@@ -182,14 +182,14 @@ function ReportHistory({ report, baseUrl, location }: ReportSectionProps) {
 				</div>
 
 				<div className="info-list-entry">
-					<dt>Handled</dt>
+					<dt>处理时间</dt>
 					<dd>
 						<time dateTime={report.action_taken_at}>{handled}</time>
 					</dd>
 				</div>
 
 				<div className="info-list-entry">
-					<dt>Comment</dt>
+					<dt>处理备注</dt>
 					<dd>{ report.action_taken_comment ?? "none"}</dd>
 				</div>
 			</dl>
@@ -207,28 +207,26 @@ function ReportActionForm({ report }) {
 
 	return (
 		<form onSubmit={submit}>
-			<h3>Resolve this report</h3>
+			<h3>处理举报</h3>
 			<>
-				An optional comment can be included while resolving this report.
-				This is useful for providing an explanation about what action was
-				taken (if any) before the report was marked as resolved.
+				在处理举报时，可以添加一个可选的备注。
+				这有助于提供关于处理结果的解释（如果有）。
 				<br />
 				<div className="info">
 					<i className="fa fa-fw fa-exclamation-triangle" aria-hidden="true"></i>
 					<b>
-						If the report was created by a local account, then any
-						comment made here will be emailed to that account's user!
+						如果举报是由本站账户创建的，那么任何在这里添加的备注都将被发送给对应用户！
 					</b>
 				</div>
 			</>
 			<TextArea
 				field={form.comment}
-				label="Comment"
+				label="备注"
 				autoCapitalize="sentences"
 			/>
 			<MutationButton
 				disabled={false}
-				label="Resolve"
+				label="处理"
 				result={result}
 			/>
 		</form>
@@ -242,7 +240,7 @@ function ReportStatuses({ report }: { report: AdminReport }) {
 	
 	return (
 		<div className="report-statuses">
-			<h3>Reported Statuses</h3>
+			<h3>嘟文</h3>
 			<ul className="thread">
 				{ report.statuses.map((status) => {
 					return (

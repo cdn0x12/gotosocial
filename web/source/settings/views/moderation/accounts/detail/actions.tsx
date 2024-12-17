@@ -76,33 +76,30 @@ function ModerateAccount({ account }: { account: AdminAccount }) {
 			onSubmit={accountAction}
 			aria-labelledby="account-moderation-actions"
 		>
-			<h3 id="account-moderation-actions">Account Moderation Actions</h3>
+			<h3 id="account-moderation-actions">账户管理操作</h3>
 			<div>
-				Currently only the "suspend" action is implemented.
+				目前仅实现了 "封禁" 操作。
 				<br/>
-				Suspending an account will delete it from your server,
-				and remove all of its media, posts, relationships, etc.
+				封禁账户将删除其在服务器上的数据，并移除所有媒体、帖文、关系等。
 				<br/>
-				If the suspended account is local, suspending will also
-				send out a "delete" message to other servers, requesting
-				them to remove its data from their instance as well.
+				如果被封禁的账户是本站账户，封禁操作还会向其他服务器发送 "删除" 消息，请求它们删除该账户的数据。
 				<br/>
-				<b>Account suspension cannot be reversed.</b>
+				<b>封禁操作无法撤销。</b>
 			</div>
 			<TextInput
 				field={form.reason}
-				placeholder="Reason for this action"
+				placeholder="封禁理由"
 				autoCapitalize="sentences"
 			/>
 			<div className="action-buttons">
 				<MutationButton
 					disabled={account.suspended || reallySuspend.value === undefined || reallySuspend.value === false}
-					label="Suspend"
+					label="封禁"
 					name="suspend"
 					result={result}
 				/>
 				<Checkbox
-					label="Really suspend"
+					label="确认封禁"
 					field={reallySuspend}
 				></Checkbox>
 			</div>
@@ -148,14 +145,14 @@ function HandleSignup({ account, backLocation }: { account: AdminAccount, backLo
 			onSubmit={handleSignup}
 			aria-labelledby="account-handle-signup"
 		>
-			<h3 id="account-handle-signup">Handle Account Sign-Up</h3>
+			<h3 id="account-handle-signup">处理账户注册</h3>
 			<Select
 				field={form.approveOrReject}
-				label="Approve or Reject"
+				label="批准或拒绝"
 				options={
 					<>
-						<option value="approve">Approve</option>
-						<option value="reject">Reject</option>
+						<option value="approve">批准</option>
+						<option value="reject">拒绝</option>
 					</>
 				}
 			>
@@ -168,20 +165,20 @@ function HandleSignup({ account, backLocation }: { account: AdminAccount, backLo
 			<>
 				<TextInput
 					field={form.privateComment}
-					label="(Optional) private comment on why sign-up was rejected (shown to other admins only)"
+					label="(可选) 拒绝理由 (仅对其他管理员可见)"
 				/>
 				<Checkbox
 					field={form.sendEmail}
-					label="Send email to applicant"
+					label="发送邮件给申请人"
 				/>
 				<TextInput
 					field={form.message}
-					label={"(Optional) message to include in email to applicant, if send email is checked"}
+					label="(可选) 邮件内容"
 				/>
 			</> }
 			<MutationButton
 				disabled={false}
-				label={form.approveOrReject.value === "approve" ? "Approve" : "Reject"}
+				label={form.approveOrReject.value === "approve" ? "批准" : "拒绝"}
 				result={result}
 			/>
 		</form>

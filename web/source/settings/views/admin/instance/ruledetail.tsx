@@ -41,7 +41,7 @@ export default function InstanceRuleDetail() {
 	}
 
 	if (rules === undefined) {
-		throw "undefined rules";
+		throw "未定义规则";
 	}
 
 	return (
@@ -78,7 +78,7 @@ function EditInstanceRuleForm({ rule }) {
 
 				<div className="action-buttons row">
 					<MutationButton
-						label="Save"
+						label="保存"
 						showError={false}
 						result={result}
 						disabled={!form.rule.hasChanged()}
@@ -88,7 +88,7 @@ function EditInstanceRuleForm({ rule }) {
 						disabled={false}
 						type="button"
 						onClick={() => deleteRule(rule.id)}
-						label="Delete"
+						label="删除"
 						className="button danger"
 						showError={false}
 						result={deleteResult}

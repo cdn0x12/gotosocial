@@ -37,10 +37,10 @@ function useSomethingElseOptions(
 	return (
 		<>
 			{ forAudience !== "everyone_else" &&
-				<option value="always">Always</option>
+				<option value="always">总是允许</option>
 			}
-			<option value="with_approval">With my approval</option>
-			<option value="no">No</option>
+			<option value="with_approval">需要批准</option>
+			<option value="no">不允许</option>
 		</>
 	);
 }
@@ -102,22 +102,22 @@ export function useSomethingElseFor(
 	return {
 		followers: {
 			field: useTextInput("followers", { defaultValue: followersDefaultValue }),
-			label: "My followers",
+			label: "我的粉丝",
 			options: useSomethingElseOptions(forVis, forAction, "followers"),
 		},
 		following: {
 			field: useTextInput("following", { defaultValue: followingDefaultValue }),
-			label: "Accounts I follow",
+			label: "我的关注",
 			options: useSomethingElseOptions(forVis, forAction, "following"),
 		},
 		mentioned: {
 			field: useTextInput("mentioned_accounts", { defaultValue: mentionedDefaultValue }),
-			label: "Accounts mentioned in the post",
+			label: "在嘟文中提及的用户",
 			options: useSomethingElseOptions(forVis, forAction, "mentioned_accounts"),
 		},
 		everyoneElse: {
 			field: useTextInput("everyone_else", { defaultValue: everyoneElseDefaultValue }),
-			label: "Everyone else",
+			label: "其他人",
 			options: useSomethingElseOptions(forVis, forAction, "everyone_else"),
 		},
 	};

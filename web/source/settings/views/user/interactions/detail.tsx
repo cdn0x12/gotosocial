@@ -35,7 +35,7 @@ export default function InteractionRequestDetail({ }) {
 
 	return (
 		<div className="interaction-request-detail">
-			<h1><BackButton to={backLocation}/> Interaction Request Details</h1>
+			<h1><BackButton to={backLocation}/> 互动请求详情</h1>
 			<FormWithData
 				dataQuery={useGetInteractionRequestQuery}
 				queryArg={params.reqId}
@@ -57,7 +57,7 @@ function InteractionRequestDetailForm({ data: req, backLocation }: { data: Inter
 	const icon = useIcon(req.type);
 
 	const strap = useMemo(() => {
-		return "@" + req.account.acct + " " + verbed + " your post.";
+		return "@" + req.account.acct + " " + verbed + " 你的嘟嘟。";
 	}, [req.account, verbed]);
 
 	return (
@@ -69,13 +69,13 @@ function InteractionRequestDetailForm({ data: req, backLocation }: { data: Inter
 				/> <strong>{strap}</strong>
 			</span>
 			
-			<h2>You wrote:</h2>
+			<h2>你写的是：</h2>
 			<div className="thread">
 				<Status status={req.status} />
 			</div>
 
 			{ req.reply && <>
-				<h2>They replied:</h2>
+				<h2>Ta回复的是：</h2>
 				<div className="thread">
 					<Status status={req.reply} />
 				</div>
@@ -84,7 +84,7 @@ function InteractionRequestDetailForm({ data: req, backLocation }: { data: Inter
 			<div className="action-buttons">
 				<MutationButton
 					label={`Accept ${noun}`}
-					title={`Accept ${noun}`}
+					title={`接受 ${noun}`}
 					type="button"
 					className="button"
 					onClick={(e) => {
@@ -99,7 +99,7 @@ function InteractionRequestDetailForm({ data: req, backLocation }: { data: Inter
 
 				<MutationButton
 					label={`Reject ${noun}`}
-					title={`Reject ${noun}`}
+					title={`拒绝 ${noun}`}
 					type="button"
 					className="button danger"
 					onClick={(e) => {

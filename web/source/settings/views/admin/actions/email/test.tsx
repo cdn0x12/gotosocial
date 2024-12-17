@@ -38,25 +38,24 @@ export default function Test({}) {
 	return (
 		<form onSubmit={submit}>
 			<div className="form-section-docs">
-				<h2>Send test email</h2>
+				<h2>发送测试邮件</h2>
 				<p>
-					To check whether your instance email configuration is correct, you can
-					try sending a test email to the given address, with an optional message.
+					为了检查您的实例邮件配置是否正确，您可以尝试向给定地址发送测试邮件，并附带可选消息。
 					<br/>
-					If you do not have SMTP configured for your instance, this will do nothing.
+					如果您的实例未配置 SMTP，此操作将不会执行。
 				</p>
 				<a
-					href="https://docs.gotosocial.org/en/latest/configuration/smtp/"
+					href="https://docs.gotosocial.org/zh-cn/latest/configuration/smtp/"
 					target="_blank"
 					className="docslink"
 					rel="noreferrer"
 				>
-					Learn more about SMTP configuration (opens in a new tab)
+					了解更多关于 SMTP 配置的信息 (在新标签页中打开)
 				</a>
 			</div>
 			<TextInput
 				field={form.email}
-				label="Email"
+				label="邮箱"
 				placeholder="someone@example.org"
 				// Get email validation for free.
 				type="email"
@@ -64,12 +63,12 @@ export default function Test({}) {
 			/>
 			<TextInput
 				field={form.message}
-				label="Message (optional)"
-				placeholder="Please disregard this test email, thanks!"
+				label="消息 (可选)"
+				placeholder="请忽略此测试邮件，谢谢！"
 			/>
 			<MutationButton
 				disabled={!form.email.value}
-				label="Send"
+				label="发送"
 				result={result}
 			/>
 		</form>

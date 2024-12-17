@@ -88,7 +88,7 @@ function UserProfileForm({ data: profile }: UserProfileFormProps) {
 	const themeOptions = useMemo(() => {
 		let themeOptions = [
 			<option key="" value="">
-				Default
+				默认
 			</option>
 		];
 
@@ -142,7 +142,7 @@ function UserProfileForm({ data: profile }: UserProfileFormProps) {
 
 	return (
 		<form className="user-profile" onSubmit={submitForm}>
-			<h1>Profile</h1>
+			<h1>个人资料</h1>
 			<div className="overview">
 				<FakeProfile
 					avatar={form.avatar.previewValue ?? profile.avatar}
@@ -154,32 +154,32 @@ function UserProfileForm({ data: profile }: UserProfileFormProps) {
 				/>
 
 				<fieldset className="file-input-with-image-description">
-					<legend>Header</legend>
+					<legend>封面</legend>
 					<FileInput
-						label="Upload file"
+						label="上传文件"
 						field={form.header}
 						accept="image/png, image/jpeg, image/webp, image/gif"
 					/>
 					<TextInput
 						field={form.headerDescription}
-						label="Image description; only settable if not using default header"
-						placeholder="A green field with pink flowers."
+						label="图片描述; 仅在未使用默认封面时可设置"
+						placeholder="一片绿色的草地，上面开满了粉色的花朵。"
 						autoCapitalize="sentences"
 						disabled={noHeaderSet && !form.header.value}
 					/>
 				</fieldset>
 				
 				<fieldset className="file-input-with-image-description">
-					<legend>Avatar</legend>
+					<legend>头像</legend>
 					<FileInput
-						label="Upload file (1:1 images look best)"
+						label="上传文件 (1:1的图片效果最佳)"
 						field={form.avatar}
 						accept="image/png, image/jpeg, image/webp, image/gif"
 					/>
 					<TextInput
 						field={form.avatarDescription}
-						label="Image description; only settable if not using default avatar"
-						placeholder="A cute drawing of a smiling sloth."
+						label="图片描述; 仅在未使用默认头像时可设置"
+						placeholder="一只可爱的树懒。"
 						autoCapitalize="sentences"
 						disabled={noAvatarSet && !form.avatar.value}
 					/>
@@ -187,9 +187,9 @@ function UserProfileForm({ data: profile }: UserProfileFormProps) {
 
 				<div className="theme">
 					<div>
-						<b id="theme-label">Theme</b>
+						<b id="theme-label">主题</b>
 						<br/>
-						<span>After choosing theme and saving, <a href={profile.url} target="_blank">open your profile</a> and refresh to see changes.</span>
+						<span>选择主题并保存后，<a href={profile.url} target="_blank">打开你的账户页</a>并刷新即可查看更改。</span>
 					</div>
 					<Select
 						aria-labelledby="theme-label"
@@ -200,94 +200,94 @@ function UserProfileForm({ data: profile }: UserProfileFormProps) {
 			</div>
 
 			<div className="form-section-docs">
-				<h3>Basic Information</h3>
+				<h3>基本信息</h3>
 				<a
-					href="https://docs.gotosocial.org/en/latest/user_guide/settings/#basic-information"
+					href="https://docs.gotosocial.org/zh-cn/latest/user_guide/settings/#basic-information"
 					target="_blank"
 					className="docslink"
 					rel="noreferrer"
 				>
-					Learn more about these settings (opens in a new tab)
+					了解更多关于这些设置的信息（在新标签页中打开）
 				</a>
 			</div>
 			<Checkbox
 				field={form.bot}
-				label="Mark as bot account; this indicates to other users that this is an automated account"
+				label="将此账户标记为机器人账户; 这表明该账户的操作是自动进行的"
 			/>
 			<TextInput
 				field={form.displayName}
-				label="Display name"
-				placeholder="A GoToSocial User"
+				label="昵称"
+				placeholder="一个GoToSocial用户"
 				autoCapitalize="words"
 				spellCheck="false"
 			/>
 			<TextArea
 				field={form.note}
-				label="Bio"
-				placeholder="Just trying out GoToSocial, my pronouns are they/them and I like sloths."
+				label="个人简介"
+				placeholder="我是树懒，我喜欢快速移动。"
 				autoCapitalize="sentences"
 				rows={8}
 			/>
 			<fieldset>
-				<legend>Profile fields</legend>
+				<legend>属性</legend>
 				<ProfileFields
 					field={form.fields}
 				/>
 			</fieldset>
 
 			<div className="form-section-docs">
-				<h3>Visibility and privacy</h3>
+				<h3>可见性与隐私</h3>
 				<a
-					href="https://docs.gotosocial.org/en/latest/user_guide/settings/#visibility-and-privacy"
+					href="https://docs.gotosocial.org/zh-cn/latest/user_guide/settings/#visibility-and-privacy"
 					target="_blank"
 					className="docslink"
 					rel="noreferrer"
 				>
-					Learn more about these settings (opens in a new tab)
+					了解更多关于这些设置的信息（在新标签页中打开）
 				</a>
 			</div>
 			<Select
 				field={form.webVisibility}
-				label="Visibility level of posts to show on your profile, and in your RSS feed (if enabled)."
+				label="在个人资料和RSS订阅中显示的嘟文可见性范围。"
 				options={
 					<>
-						<option value="public">Show Public posts only (the GoToSocial default)</option>
-						<option value="unlisted">Show Public and Unlisted posts (the Mastodon default)</option>
-						<option value="none">Show no posts</option>
+						<option value="public">仅显示公开嘟文（GoToSocial默认）</option>
+						<option value="unlisted">显示公开和未列出的嘟文（Mastodon默认）</option>
+						<option value="none">不显示任何嘟文</option>
 					</>
 				}
 			/>
 			<Checkbox
 				field={form.locked}
-				label="Manually approve follow requests."
+				label="手动批准关注请求。"
 			/>
 			<Checkbox
 				field={form.discoverable}
-				label="Mark account as discoverable by search engines and directories."
+				label="让账户可被搜索引擎和目录发现。"
 			/>
 			<Checkbox
 				field={form.enableRSS}
-				label="Enable RSS feed of posts."
+				label="启用嘟文RSS订阅。"
 			/>
 			<Checkbox
 				field={form.hideCollections}
-				label="Hide who you follow / are followed by."
+				label="隐藏你的关注与粉丝详情。"
 			/>
 
 			<div className="form-section-docs">
-				<h3>Advanced</h3>
+				<h3>进阶设置</h3>
 				<a
-					href="https://docs.gotosocial.org/en/latest/user_guide/settings/#advanced"
+					href="https://docs.gotosocial.org/zh-cn/latest/user_guide/settings/#advanced"
 					target="_blank"
 					className="docslink"
 					rel="noreferrer"
 				>
-					Learn more about these settings (opens in a new tab)
+					了解更多关于这些设置的信息（在新标签页中打开）
 				</a>
 			</div>
 			<TextArea
 				field={form.customCSS}
-				label={`Custom CSS` + (!instanceConfig.allowCustomCSS ? ` (not enabled on this instance)` : ``)}
+				label={`自定义CSS` + (!instanceConfig.allowCustomCSS ? ` (本实例未启用)` : ``)}
 				className="monospace"
 				rows={8}
 				disabled={!instanceConfig.allowCustomCSS}
@@ -296,7 +296,7 @@ function UserProfileForm({ data: profile }: UserProfileFormProps) {
 			/>
 			<MutationButton
 				disabled={false}
-				label="Save profile info"
+				label="保存个人资料信息"
 				result={result}
 			/>
 		</form>
@@ -329,13 +329,13 @@ function Field({ index, data }) {
 		<div className="entry">
 			<TextInput
 				field={form.name}
-				placeholder="Name"
+				placeholder="属性名"
 				autoCapitalize="none"
 				spellCheck="false"
 			/>
 			<TextInput
 				field={form.value}
-				placeholder="Value"
+				placeholder="属性值"
 				autoCapitalize="none"
 				spellCheck="false"
 			/>

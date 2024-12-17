@@ -33,17 +33,16 @@ export default function Caches({}) {
 		<div className="admin-debug-caches">
 			<form onSubmit={submit}>
 				<div className="form-section-docs">
-					<h2>Clear Caches</h2>
+					<h2>清理缓存</h2>
 					<p>
-						Clear internal in-memory caches
+						清理内部内存缓存
 						<br/>
-						This is useful for checking memory usage of caches, or for
-						clearing database cache results after manual database updates.
+						这对于检查缓存内存使用情况或清除数据库缓存结果非常有用。
 					</p>
 				</div>
 				<MutationButton
 					disabled={false}
-					label="Clear caches"
+					label="清理缓存"
 					result={clearCachesResult}
 				/>
 			</form>

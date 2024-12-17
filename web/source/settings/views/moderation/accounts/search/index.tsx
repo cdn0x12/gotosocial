@@ -113,39 +113,39 @@ export function AccountSearchForm() {
 			>
 				<TextInput
 					field={form.username}
-					label={`Username (without "@" prefix) - case sensitive`}
+					label={`用户名 (不带"@"前缀) - 区分大小写`}
 					placeholder="someone"
 					autoCapitalize="none"
 					spellCheck="false"
 				/>
 				<TextInput
 					field={form.by_domain}
-					label={`Domain (without "https://" prefix)`}
+					label={`域名 (不带"https://"前缀)`}
 					placeholder="example.org"
 					autoCapitalize="none"
 					spellCheck="false"
 				/>
 				<Select
 					field={form.origin}
-					label="Account origin"
+					label="账户来源"
 					options={
 						<>
-							<option value="">Local or remote</option>
-							<option value="local">Local only</option>
-							<option value="remote">Remote only</option>
+							<option value="">本站或外站</option>
+							<option value="local">本站</option>
+							<option value="remote">外站</option>
 						</>
 					}
 				></Select>
 				<TextInput
 					field={form.email}
-					label={"Email address (local accounts only)"}
+					label={"邮箱地址 (本站账户)"}
 					placeholder={"someone@example.org"}
 					// Get email validation for free.
 					type="email"
 				/>
 				<TextInput
 					field={form.ip}
-					label={"IP address (local accounts only)"}
+					label={"IP地址 (本站账户)"}
 					placeholder={"198.51.100.0"}
 					autoCapitalize="none"
 					spellCheck="false"
@@ -153,13 +153,13 @@ export function AccountSearchForm() {
 				/>
 				<Select
 					field={form.status}
-					label="Account status"
+					label="账户状态"
 					options={
 						<>
-							<option value="">Any</option>
-							<option value="pending">Pending only</option>
-							<option value="disabled">Disabled only</option>
-							<option value="suspended">Suspended only</option>
+							<option value="">全部</option>
+							<option value="pending">待审核</option>
+							<option value="disabled">已停用</option>
+							<option value="suspended">已封禁</option>
 						</>
 					}
 				></Select>
@@ -177,7 +177,7 @@ export function AccountSearchForm() {
 				itemToEntry={itemToEntry}
 				isError={searchRes.isError}
 				error={searchRes.error}
-				emptyMessage={<b>No accounts found that match your query.</b>}
+				emptyMessage={<b>没有符合条件的账户。</b>}
 				prevNextLinks={searchRes.data?.links}
 			/>
 		</>

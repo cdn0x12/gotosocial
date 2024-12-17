@@ -205,7 +205,7 @@ const extended = gtsApi.injectEndpoints({
 							status: 400,
 							statusText: 'Bad Request',
 							data: {
-								error: `One or more errors fetching custom emojis: [${errData}]`
+								error: `获取自定义表情时发生错误: [${errData}]`
 							},
 						},
 					};	
@@ -285,7 +285,7 @@ const extended = gtsApi.injectEndpoints({
 							status: 400,
 							statusText: 'Bad Request',
 							data: {
-								error: `One or more errors patching custom emojis: [${errData}]`
+								error: `更新自定义表情时发生错误: [${errData}]`
 							},
 						},
 					};	

@@ -84,7 +84,7 @@ const extended = gtsApi.injectEndpoints({
 						error: {
 							status: 400,
 							statusText: 'Bad Request',
-							data: {"error":"Waiting for callback, but no ?code= provided in url."},
+							data: {"error":"正在等待回调，但 URL 中未提供 ?code=。"},
 						},
 					};
 				}
@@ -97,7 +97,7 @@ const extended = gtsApi.injectEndpoints({
 						error: {
 							status: 400,
 							statusText: 'Bad Request',
-							data: {"error":"No stored app registration data, can't finish login flow."},
+							data: {"error":"未存储应用注册数据，无法完成登录流程。"},
 						},
 					};
 				}

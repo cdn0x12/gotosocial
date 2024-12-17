@@ -47,7 +47,7 @@ export default function PostSettings() {
 
 	return (
 		<>
-			<h1>Post Settings</h1>
+			<h1>嘟文设置</h1>
 			<BasicSettings account={account} />
 			<InteractionPolicySettings />
 		</>

@@ -35,7 +35,7 @@ export default function useFileInput(
 	{
 		withPreview,
 		maxSize,
-		initialInfo = "no file selected"
+		initialInfo = "未选择文件"
 	}: HookOpts<File>
 ): FileFormInputHook {
 	const [file, setFile] = useState<File>();
@@ -74,7 +74,7 @@ export default function useFileInput(
 			const maxSizePrettier = prettierBytes(maxSize);
 			setInfo(
 				<ErrorC
-					error={new Error(`file size ${sizePrettier} is larger than max size ${maxSizePrettier}`)}
+					error={new Error(`文件大小 ${sizePrettier} 超过最大限制 ${maxSizePrettier}`)}
 					reset={(reset)}
 				/>
 			);

@@ -45,7 +45,7 @@ export function useContent(status: Status | undefined): string {
 		}
 		
 		if (status.content.length === 0) {
-			return "[no content set]";
+			return "[没有设置内容]";
 		} else {
 			// HTML has already been through
 			// the instance sanitizer by now,
@@ -62,11 +62,11 @@ export function useVerbed(type: "favourite" | "reply" | "reblog"): string {
 	return useMemo(() => {
 		switch (type) {
 			case "favourite":
-				return "liked";
+				return "点赞了";
 			case "reply":
-				return "replied to";
+				return "回复了";
 			case "reblog":
-				return "boosted";
+				return "转嘟了";
 		}
 	}, [type]);
 }
@@ -75,11 +75,11 @@ export function useNoun(type: "favourite" | "reply" | "reblog"): string {
 	return useMemo(() => {
 		switch (type) {
 			case "favourite":
-				return "Like";
+				return "点赞";
 			case "reply":
-				return "Reply";
+				return "回复";
 			case "reblog":
-				return "Boost";
+				return "转嘟";
 		}
 	}, [type]);
 }

@@ -48,16 +48,15 @@ export default function EmojiOverview() {
 
 	return (
 		<>
-			<h1>Local Custom Emoji</h1>
+			<h1>本站自定义表情</h1>
 			<p>
-				To use custom emoji in your toots they have to be 'local' to the instance.
-				You can either upload them here directly, or copy from those already
-				present on other (known) instances through the <Link to={`/remote`}>Remote Emoji</Link> page.
+				要在你的嘟文中使用自定义表情，它们必须被“本地化”到你的实例。
+				您可以直接在此处上传，或通过 <Link to={`/remote`}>外站表情</Link> 页面从其他（已知）实例复制。
 			</p>
 			<p>
-				<strong>Be warned!</strong> If you upload more than about 300-400 custom emojis in
-				total on your instance, this may lead to rate-limiting issues for users and clients
-				if they try to load all the emoji images at once (which is what many clients do).
+				<strong>警告！</strong> 如果您上传超过 300-400 个自定义表情，
+				且用户和客户端尝试一次性加载所有表情图像（这是许多客户端的做法），
+				可能会导致速率限制问题。
 			</p>
 			{content}
 		</>
@@ -105,17 +104,17 @@ function EmojiList({ emoji }: EmojiListParams) {
 
 	return (
 		<>
-			<h2>Overview</h2>
+			<h2>概览</h2>
 			{emoji.length > 0
-				? <span>{emoji.length} custom emoji {filteredCount > 0 && `(${filteredCount} filtered)`}</span>
-				: <span>No custom emoji yet, you can add one below.</span>
+				? <span>{emoji.length} 个自定义表情 {filteredCount > 0 && `(${filteredCount} 已过滤)`}</span>
+				: <span>还没有自定义表情，你可以点击下方按钮添加。</span>
 			}
 			<div className="list emoji-list">
 				<div className="header">
 					<TextInput
 						field={filterField}
 						name="emoji-shortcode"
-						placeholder="Search"
+						placeholder="搜索"
 						autoCapitalize="none"
 						spellCheck="false"
 					/>
@@ -129,7 +128,7 @@ function EmojiList({ emoji }: EmojiListParams) {
 								})}
 							</div>
 						)
-						: <div className="entry">No local emoji matched your filter.</div>
+						: <div className="entry">没有匹配到任何自定义表情。</div>
 					}
 				</div>
 			</div>

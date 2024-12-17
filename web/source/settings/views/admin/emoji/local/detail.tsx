@@ -98,7 +98,7 @@ function EmojiDetailForm({ data: emoji }) {
 			</div>
 
 			<form onSubmit={modifyEmoji} className="left-border">
-				<h2>Modify this emoji {result.isLoading && <Loading />}</h2>
+				<h2>修改此表情 {result.isLoading && <Loading />}</h2>
 
 				<div className="update-category">
 					<CategorySelect
@@ -106,7 +106,7 @@ function EmojiDetailForm({ data: emoji }) {
 					>
 						<MutationButton
 							name="create-category"
-							label="Create"
+							label="创建"
 							result={result}
 							showError={false}
 							style={{ visibility: (form.category.isNew ? "initial" : "hidden") }}
@@ -118,25 +118,25 @@ function EmojiDetailForm({ data: emoji }) {
 				<div className="update-image">
 					<FileInput
 						field={form.image}
-						label="Image"
+						label="图像"
 						accept="image/png,image/gif"
 					/>
 
 					<MutationButton
 						name="image"
-						label="Replace image"
+						label="替换图片"
 						showError={false}
 						result={result}
 						disabled={!form.image.value}
 					/>
 
 					<FakeStatus>
-						Look at this new custom emoji <img
+						家人们，看我的新表情 <img
 							className="emoji"
 							src={form.image.previewValue ?? emoji.url}
 							title={`:${emoji.shortcode}:`}
 							alt={emoji.shortcode}
-						/> isn&apos;t it cool?
+						/> 怎么说？
 					</FakeStatus>
 
 					{result.error && <Error error={result.error} />}

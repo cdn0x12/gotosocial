@@ -115,23 +115,23 @@ function useBasicLabel(visibility: Visibility, action: Action) {
 		let visPost = "";
 		switch (visibility) {
 			case "public":
-				visPost = "a public post";
+				visPost = "可见性为公开的嘟文";
 				break;
 			case "unlisted":
-				visPost = "an unlisted post";
+				visPost = "可见性为不列出的嘟文";
 				break;
 			case "private":
-				visPost = "a followers-only post";
+				visPost = "仅粉丝可见的嘟文";
 				break;
 		}
 		
 		switch (action) {
 			case "favourite":
-				return "Who can like " + visPost + "?";
+				return "谁可以点赞" + visPost + "?";
 			case "reply":
-				return "Who else can reply to " + visPost + "?";
+				return "谁可以回复" + visPost + "?";
 			case "reblog":
-				return "Who can boost " + visPost + "?";
+				return "谁可以转嘟" + visPost + "?";
 		}
 	}, [visibility, action]);
 }
@@ -141,16 +141,16 @@ function useBasicLabel(visibility: Visibility, action: Action) {
 function useBasicOptions(visibility: Visibility) {
 	return useMemo(() => {
 		const audience = visibility === "private"
-			? "My followers"
-			: "Anyone";
+			? "我的粉丝"
+			: "任何人";
 		
 		return (
 			<>
 				<option value="anyone">{audience}</option>
-				<option value="anyone_with_approval">{audience} (approval required)</option>
-				<option value="just_me">Just me</option>
+				<option value="anyone_with_approval">{audience}（需要批准）</option>
+				<option value="just_me">只有我</option>
 				{ visibility !== "private" &&
-					<option value="something_else">Something else...</option>
+					<option value="something_else">其他...</option>
 				}
 			</>
 		);

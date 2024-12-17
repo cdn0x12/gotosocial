@@ -63,7 +63,7 @@ export default function useFormSubmit(
 	opts: UseFormSubmitOptions = { changedOnly: true }
 ): [ FormSubmitFunction, FormSubmitResult ] {
 	if (!Array.isArray(mutationQuery)) {
-		throw "useFormSubmit: mutationQuery was not an Array. Is a valid useMutation RTK Query provided?";
+		throw "useFormSubmit: mutationQuery 不是一个数组。是否提供了有效的 useMutation RTK Query？";
 	}
 
 	const { changedOnly, onFinish } = opts;
@@ -126,7 +126,7 @@ export default function useFormSubmit(
 			}
 		} catch (e) {
 			// eslint-disable-next-line no-console
-			console.error(`caught error running mutation: ${e}`);
+			console.error(`运行更新时发生错误: ${e}`);
 		}
 	};
 	

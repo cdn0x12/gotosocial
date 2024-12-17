@@ -47,10 +47,9 @@ export default function ExportImport() {
 	
 	return (
 		<>
-			<h1>Export & Import</h1>
+			<h1>导出 & 导入</h1>
 			<p>
-				On this page you can export data from your GoToSocial account, or import data into
-				your GoToSocial account. All exports and imports use Mastodon-compatible CSV files.
+				在此页面，您可以导出您的 GoToSocial 账户数据，或导入数据到您的 GoToSocial 账户。所有导出和导入都使用与 Mastodon 兼容的 CSV 文件。
 			</p>
 			<Export exportStats={exportStats} />
 			<Import />

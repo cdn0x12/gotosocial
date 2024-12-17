@@ -45,42 +45,42 @@ export default function BasicSettings({ account }: { account: Account }) {
 	return (
 		<form className="post-settings" onSubmit={submitForm}>
 			<div className="form-section-docs">
-				<h3>Basic</h3>
+				<h3>基本设置</h3>
 				<a
-					href="https://docs.gotosocial.org/en/latest/user_guide/settings#post-settings"
+					href="https://docs.gotosocial.org/zh-cn/latest/user_guide/settings#post-settings"
 					target="_blank"
 					className="docslink"
 					rel="noreferrer"
 				>
-				Learn more about these settings (opens in a new tab)
+				了解更多关于这些设置的信息（在新标签页中打开）
 				</a>
 			</div>
-			<Select field={form.language} label="Default post language" options={
+			<Select field={form.language} label="默认发嘟语言" options={
 				<Languages />
 			}>
 			</Select>
-			<Select field={form.defaultPrivacy} label="Default post privacy" options={
+			<Select field={form.defaultPrivacy} label="默认发嘟可见性" options={
 				<>
-					<option value="public">Public</option>
-					<option value="unlisted">Unlisted</option>
-					<option value="private">Followers-only</option>
+					<option value="public">公开</option>
+					<option value="unlisted">不列出</option>
+					<option value="private">仅粉丝可见</option>
 				</>
 			}>
 			</Select>
-			<Select field={form.statusContentType} label="Default post (and bio) format" options={
+			<Select field={form.statusContentType} label="默认发嘟格式" options={
 				<>
-					<option value="text/plain">Plain (default)</option>
+					<option value="text/plain">纯文本（默认）</option>
 					<option value="text/markdown">Markdown</option>
 				</>
 			}>
 			</Select>
 			<Checkbox
 				field={form.isSensitive}
-				label="Mark my posts as sensitive by default"
+				label="默认将我的嘟文标记为敏感"
 			/>
 			<MutationButton
 				disabled={false}
-				label="Save settings"
+				label="保存设置"
 				result={result}
 			/>
 		</form>

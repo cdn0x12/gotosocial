@@ -24,40 +24,40 @@ export default function FakeProfile({ avatar, header, display_name, bot, usernam
 		<div className="profile">
 			<div className="profile-header">
 				<div className="header-image-wrapper">
-					<img src={header} alt={header ? `header image for ${username}` : "None set"} />
+					<img src={header} alt={header ? `${username} 的横幅背景图` : "未设置"} />
 				</div>
 				<div className="basic-info" aria-hidden="true">
 					<div className="avatar-image-wrapper">
 						<a href={avatar}>
-							<img className="avatar" src={avatar} alt={avatar ? `avatar image for ${username}` : "None set"} />
+							<img className="avatar" src={avatar} alt={avatar ? `${username} 的头像` : "未设置"} />
 						</a>
 					</div>
 					<dl className="namerole">
-						<dt className="sr-only">Display name</dt>
+						<dt className="sr-only">昵称</dt>
 						<dd className="displayname text-cutoff">{display_name.trim().length > 0 ? display_name : username}</dd>
 						<div className="bot-username-wrapper">
 							{ bot && <>
-								<dt className="sr-only">Bot account</dt>
+								<dt className="sr-only">机器人账户</dt>
 								<dd>
 									<span className="sr-only">true</span>
 									<div
 										className="bot-legend-wrapper"
 										aria-hidden="true"
-										title="This is a bot account."
+										title="这是一个机器人账户"
 									>
 										<i className="bot-icon fa fa-microchip"></i>
 										<span className="bot-legend">bot</span>
 									</div>
 								</dd>
 							</>}
-							<dt className="sr-only">Username</dt>
+							<dt className="sr-only">用户名</dt>
 							<dd className="username text-cutoff">@{username}</dd>
 						</div>
-						<dt className="sr-only">Role</dt>
+						<dt className="sr-only">用户组</dt>
 						{
 							(role && role.name != "user") ?
 								<>
-									<dd className="sr-only">Role</dd>
+									<dd className="sr-only">用户组</dd>
 									<dt className={`role ${role.name}`}>{role.name}</dt>
 								</>
 								: null

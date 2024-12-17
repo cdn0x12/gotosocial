@@ -39,22 +39,18 @@ export default function ExpireRemote({}) {
 	return (
 		<form onSubmit={submitExpire}>
 			<div className="form-section-docs">
-				<h2>Expire remote instance keys</h2>
+				<h2>轮转外站实例密钥</h2>
 				<p>
-					Mark all public keys from the given remote instance as expired.
+					将给定外站实例的所有公钥标记为过期。
 					<br/>
-					This is useful in cases where the remote domain has had to rotate
-					their keys for whatever reason (security issue, data leak, routine
-					safety procedure, etc), and your instance can no longer communicate
-					with theirs properly using cached keys.
+					这在外站实例需要轮转密钥（例如安全问题、数据泄露、例行安全程序等），而您的实例无法再与它们正常通信时非常有用。
 					<br/>
-					A key marked as expired in this way will be lazily refetched next time
-					a request is made to your instance signed by the owner of that key.
+					一个被标记为过期的密钥将在下次请求时被重新懒加载。
 				</p>
 			</div>
 			<TextInput
 				field={domainField}
-				label="Domain"
+				label="域名"
 				type="text"
 				autoCapitalize="none"
 				spellCheck="false"
@@ -62,7 +58,7 @@ export default function ExpireRemote({}) {
 			/>
 			<MutationButton
 				disabled={!domainField.value || !domainField.valid}
-				label="Expire keys"
+				label="轮转密钥"
 				result={expireResult}
 			/>
 		</form>

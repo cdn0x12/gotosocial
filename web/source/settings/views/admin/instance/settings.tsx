@@ -50,7 +50,7 @@ function InstanceSettingsForm({ data: instance }: InstanceSettingsFormProps) {
 	const form = {
 		title: useTextInput("title", {
 			source: instance,
-			validator: (val: string) => val.length <= titleLimit ? "" : `Instance title is ${val.length} characters; must be ${titleLimit} characters or less`
+			validator: (val: string) => val.length <= titleLimit ? "" : `实例名为 ${val.length} 个字符；必须少于 ${titleLimit} 个字符`
 		}),
 		thumbnail: useFileInput("thumbnail", { withPreview: true }),
 		thumbnailDesc: useTextInput("thumbnail_description", { source: instance }),
@@ -58,13 +58,13 @@ function InstanceSettingsForm({ data: instance }: InstanceSettingsFormProps) {
 			source: instance,
 			// Select "raw" text version of parsed field for editing.
 			valueSelector: (s: InstanceV1) => s.short_description_text,
-			validator: (val: string) => val.length <= shortDescLimit ? "" : `Instance short description is ${val.length} characters; must be ${shortDescLimit} characters or less`
+			validator: (val: string) => val.length <= shortDescLimit ? "" : `实例简介为 ${val.length} 个字符；必须少于 ${shortDescLimit} 个字符`
 		}),
 		description: useTextInput("description", {
 			source: instance,
 			// Select "raw" text version of parsed field for editing.
 			valueSelector: (s: InstanceV1) => s.description_text,
-			validator: (val: string) => val.length <= descLimit ? "" : `Instance description is ${val.length} characters; must be ${descLimit} characters or less`
+			validator: (val: string) => val.length <= descLimit ? "" : `实例描述为 ${val.length} 个字符；必须少于 ${descLimit} 个字符`
 		}),
 		customCSS: useTextInput("custom_css", {
 			source: instance,
@@ -74,7 +74,7 @@ function InstanceSettingsForm({ data: instance }: InstanceSettingsFormProps) {
 			source: instance,
 			// Select "raw" text version of parsed field for editing.
 			valueSelector: (s: InstanceV1) => s.terms_text,
-			validator: (val: string) => val.length <= termsLimit ? "" : `Instance terms and conditions is ${val.length} characters; must be ${termsLimit} characters or less`
+			validator: (val: string) => val.length <= termsLimit ? "" : `实例条款为 ${val.length} 个字符；必须少于 ${termsLimit} 个字符`
 		}),
 		contactUser: useTextInput("contact_username", { source: instance, valueSelector: (s) => s.contact_account?.username }),
 		contactEmail: useTextInput("contact_email", { source: instance, valueSelector: (s) => s.email })
@@ -87,34 +87,34 @@ function InstanceSettingsForm({ data: instance }: InstanceSettingsFormProps) {
 			onSubmit={submitForm}
 			autoComplete="none"
 		>
-			<h1>Instance Settings</h1>
+			<h1>实例设置</h1>
 
 			<div className="form-section-docs">
-				<h3>Appearance</h3>
+				<h3>外观</h3>
 				<a
-					href="https://docs.gotosocial.org/en/latest/admin/settings/#instance-appearance"
+					href="https://docs.gotosocial.org/zh-cn/latest/admin/settings/#instance-appearance"
 					target="_blank"
 					className="docslink"
 					rel="noreferrer"
 				>
-					Learn more about these settings (opens in a new tab)
+					了解更多关于这些设置的信息 (在新的标签页中打开)
 				</a>
 			</div>
 
 			<TextInput
 				field={form.title}
-				label={`Instance title (max ${titleLimit} characters)`}
+				label={`实例名称 (最多 ${titleLimit} 个字符)`}
 				autoCapitalize="words"
-				placeholder="My GoToSocial Instance"
+				placeholder="我的 GoToSocial 实例"
 			/>
 
 			<div className="file-upload" aria-labelledby="avatar">
-				<strong id="avatar">Instance avatar (1:1 images look best)</strong>
+				<strong id="avatar">实例头像 (1:1 图像效果最佳)</strong>
 				<div className="file-upload-with-preview">
 					<img
 						className="preview avatar"
 						src={form.thumbnail.previewValue ?? instance?.thumbnail}
-						alt={form.thumbnailDesc.value ?? (instance?.thumbnail ? `Thumbnail image for the instance` : "No instance thumbnail image set")}
+						alt={form.thumbnailDesc.value ?? (instance?.thumbnail ? `实例头像` : "未设置实例头像")}
 					/>
 					<div className="file-input-with-image-description">
 						<FileInput
@@ -123,8 +123,8 @@ function InstanceSettingsForm({ data: instance }: InstanceSettingsFormProps) {
 						/>
 						<TextInput
 							field={form.thumbnailDesc}
-							label="Avatar image description"
-							placeholder="A cute drawing of a smiling sloth."
+							label="头像图像描述"
+							placeholder="一个可爱的微笑树懒图。"
 							autoCapitalize="sentences"
 						/>
 					</div>
@@ -133,56 +133,56 @@ function InstanceSettingsForm({ data: instance }: InstanceSettingsFormProps) {
 			</div>
 
 			<div className="form-section-docs">
-				<h3>Descriptors</h3>
+				<h3>描述符</h3>
 				<a
-					href="https://docs.gotosocial.org/en/latest/admin/settings/#instance-descriptors"
+					href="https://docs.gotosocial.org/zh-cn/latest/admin/settings/#instance-descriptors"
 					target="_blank"
 					className="docslink"
 					rel="noreferrer"
 				>
-					Learn more about these settings (opens in a new tab)
+					了解更多关于这些设置的信息 (在新的标签页中打开)
 				</a>
 			</div>
 
 			<TextArea
 				field={form.shortDesc}
-				label={`Short description (markdown accepted, max ${shortDescLimit} characters)`}
-				placeholder="A small testing instance for GoToSocial."
+				label={`实例简介 (接受 markdown，最多 ${shortDescLimit} 个字符)`}
+				placeholder="一个用于测试的小型 GoToSocial 实例。"
 				autoCapitalize="sentences"
 				rows={6}
 			/>
 
 			<TextArea
 				field={form.description}
-				label={`Full description (markdown accepted, max ${descLimit} characters)`}
-				placeholder="A small testing instance for GoToSocial. Just trying it out, my main instance is https://example.com"
+				label={`实例描述 (接受 markdown，最多 ${descLimit} 个字符)`}
+				placeholder="一个用于测试的小型 GoToSocial 实例。"
 				autoCapitalize="sentences"
 				rows={6}
 			/>
 
 			<TextArea
 				field={form.terms}
-				label={`Terms & Conditions (markdown accepted, max ${termsLimit} characters)`}
-				placeholder="Terms and conditions of using this instance, data policy, imprint, GDPR stuff, yadda yadda."
+				label={`实例条款（接受 markdown，最多 ${termsLimit} 个字符）`}
+				placeholder="使用此实例的条款和条件，数据政策，版权规则，GDPR 等。"
 				autoCapitalize="sentences"
 				rows={6}
 			/>
 
 			<div className="form-section-docs">
-				<h3>Contact info</h3>
+				<h3>联系信息</h3>
 				<a
-					href="https://docs.gotosocial.org/en/latest/admin/settings/#instance-contact-info"
+					href="https://docs.gotosocial.org/zh-cn/latest/admin/settings/#instance-contact-info"
 					target="_blank"
 					className="docslink"
 					rel="noreferrer"
 				>
-					Learn more about these settings (opens in a new tab)
+					了解更多关于这些设置的信息 (在新的标签页中打开)
 				</a>
 			</div>
 
 			<TextInput
 				field={form.contactUser}
-				label="Contact user (local account username)"
+				label="联络用户 (本站账户的用户名)"
 				placeholder="admin"
 				autoCapitalize="none"
 				spellCheck="false"
@@ -190,21 +190,21 @@ function InstanceSettingsForm({ data: instance }: InstanceSettingsFormProps) {
 
 			<TextInput
 				field={form.contactEmail}
-				label="Contact email"
+				label="联络邮箱"
 				placeholder="admin@example.com"
 				type="email"
 			/>
 
 			<TextArea
 				field={form.customCSS}
-				label={"Custom CSS"}
+				label="自定义 CSS"
 				className="monospace"
 				rows={8}
 				autoCapitalize="none"
 				spellCheck="false"
 			/>
 
-			<MutationButton label="Save" result={result} disabled={false} />
+			<MutationButton label="保存" result={result} disabled={false} />
 		</form>
 	);
 }

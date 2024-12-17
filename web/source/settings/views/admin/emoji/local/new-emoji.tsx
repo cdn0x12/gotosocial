@@ -101,22 +101,22 @@ export default function NewEmojiForm() {
 
 	return (
 		<div>
-			<h2>Add new custom emoji</h2>
+			<h2>添加新的自定义表情</h2>
 
 			<FakeStatus>
-				Look at this new custom emoji {emojiOrShortcode} isn&apos;t it cool?
+				看看这个新的自定义表情 {emojiOrShortcode} 怎么说？
 			</FakeStatus>
 
 			<form onSubmit={submitForm} className="form-flex">
 				<FileInput
 					field={form.image}
-					label={`Image file: png, gif, or static webp; max size ${prettierMaxSize}`}
+					label={`图片文件: png, gif, 或静态 webp; 最大尺寸 ${prettierMaxSize}`}
 					accept="image/png,image/gif,image/webp"
 				/>
 
 				<TextInput
 					field={form.shortcode}
-					label="Shortcode, must be unique among the instance's local emoji"
+					label="短代码, 必须保证在实例中唯一"
 					autoCapitalize="none"
 					spellCheck="false"
 					{...{pattern: "^\\w{1,30}$"}}
@@ -128,7 +128,7 @@ export default function NewEmojiForm() {
 
 				<MutationButton
 					disabled={form.image.previewValue === undefined || form.shortcode.value?.length === 0}
-					label="Upload emoji"
+					label="上传表情"
 					result={result}
 				/>
 			</form>

@@ -39,15 +39,15 @@ export default function useShortcode() {
 			if (code == "") { return ""; }
 
 			if (emojiCodes.has(code)) {
-				return "Shortcode already in use";
+				return "短代码已被使用";
 			}
 
 			if (code.length < 1 || code.length > 30) {
-				return "Shortcode must be between 1 and 30 characters";
+				return "短代码必须为 1 到 30 个字符";
 			}
 
 			if (!shortcodeRegex.test(code)) {
-				return "Shortcode must only contain letters, numbers, and underscores";
+				return "短代码只能包含字母、数字和下划线";
 			}
 
 			return "";

@@ -31,19 +31,19 @@ import { useBaseUrl } from "../../../lib/navigation/util";
 import BackButton from "../../../components/back-button";
 import MutationButton from "../../../components/form/mutation-button";
 
-const testString = `/* To test this properly, set "flavor" to "Golang", as that's the language GoToSocial uses for regular expressions */
+const testString = `/* 要正确测试此内容，请将 "flavor" 设置为 "Golang"，因为这是 GoToSocial 用于正则表达式的语言 */
 
-/* Amazon crawler User-Agent example */
+/* Amazon 爬虫 User-Agent 示例 */
 Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/600.2.5 (KHTML\\, like Gecko) Version/8.0.2 Safari/600.2.5 (Amazonbot/0.1; +https://developer.amazon.com/support/amazonbot)
 
-/* Some other test strings */
+/* 其他测试字符串 */
 Some Test Value
 Another Test Value`;
 
 export default function HeaderPermDetail() {
 	let params = useParams();
 	if (params.permType !== "blocks" && params.permType !== "allows") {
-		throw "unrecognized perm type " + params.permType;
+		throw "未识别的权限类型 " + params.permType;
 	}
 	const permType = useMemo(() => {
 		return params.permType?.slice(0, -1) as PermType;
@@ -51,7 +51,7 @@ export default function HeaderPermDetail() {
 
 	let permID = params.permId as string | undefined;
 	if (!permID) {
-		throw "no perm ID";
+		throw "没有权限 ID";
 	}
 
 	if (permType === "block") {
@@ -105,7 +105,7 @@ function PermDeets({
 	} else if (isError) {
 		return <Error error={error} />;
 	} else if (perm === undefined) {
-		throw "perm undefined";
+		throw "权限未定义";
 	}
 
 	const created = new Date(perm.created_at).toDateString();	
@@ -120,18 +120,18 @@ function PermDeets({
 
 	return (
 		<div className="http-header-permission-details">
-			<h1><BackButton to={`~${baseUrl}/${permType.toLowerCase()}s`} /> HTTP Header {permType} Detail</h1>
+			<h1><BackButton to={`~${baseUrl}/${permType.toLowerCase()}s`} /> HTTP 标头 {permType} 详情</h1>
 			<dl className="info-list">
 				<div className="info-list-entry">
 					<dt>ID</dt>
 					<dd className="monospace">{perm.id}</dd>
 				</div>
 				<div className="info-list-entry">
-					<dt>Created</dt>
+					<dt>创建时间</dt>
 					<dd><time dateTime={perm.created_at}>{created}</time></dd>
 				</div>
 				<div className="info-list-entry">
-					<dt>Created By</dt>
+					<dt>创建者</dt>
 					<dd>
 						<UsernameLozenge
 							account={perm.created_by}
@@ -141,22 +141,22 @@ function PermDeets({
 					</dd>
 				</div>
 				<div className="info-list-entry">
-					<dt>Header Name</dt>
+					<dt>标头名</dt>
 					<dd className="monospace">{perm.header}</dd>
 				</div>
 				<div className="info-list-entry">
-					<dt>Value Regex</dt>
+					<dt>标头值正则表达式</dt>
 					<dd className="monospace">{perm.regex}</dd>
 				</div>
 				<div className="info-list-entry">
-					<dt>Test This Regex</dt>
+					<dt>测试此正则表达式</dt>
 					<dd>
 						<a
 							href={regexLink}
 							target="_blank"
 							rel="noreferrer"
 						>
-							<i className="fa fa-fw fa-external-link" aria-hidden="true"></i> Link to Regex101 (opens in a new tab)
+							<i className="fa fa-fw fa-external-link" aria-hidden="true"></i> 转到 Regex101 (在新的标签页中打开)
 						</a>
 					</dd>
 				</div>
@@ -181,7 +181,7 @@ function DeleteBlock({ id }: { id: string }) {
 				removeTrigger(id);
 				setLocation(`~${baseUrl}/blocks`);
 			}}
-			label="Remove this block"
+			label="移除此屏蔽规则"
 			result={removeResult}
 			className="button danger"
 			showError={false}
@@ -202,7 +202,7 @@ function DeleteAllow({ id }: { id: string }) {
 				removeTrigger(id);
 				setLocation(`~${baseUrl}/allows`);
 			}}
-			label="Remove this allow"
+			label="移除此放行规则"
 			result={removeResult}
 			className="button danger"
 			showError={false}

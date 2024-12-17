@@ -125,27 +125,23 @@ function InteractionPoliciesForm({ defaultPolicies }: InteractionPoliciesFormPro
 	return (
 		<form className="interaction-default-settings" onSubmit={onSubmit}>
 			<div className="form-section-docs">
-				<h3>Default Interaction Policies</h3>
+				<h3>默认互动规则</h3>
 				<p>
-					You can use this section to customize the default interaction
-					policy for posts created by you, per visibility setting.
+					你可以使用这一部分设置自定义你发的嘟嘟的默认互动规则，按可见性分别设置。
 					<br/>
-					These settings apply only for new posts created by you <em>after</em> applying
-					these settings; they do not apply retroactively.
+					这些设置仅适用于你<em>之后</em>的嘟嘟。应用这些设置后；它们不会对之前发的嘟嘟生效。
 					<br/>
-					The word "anyone" in the below options means <em>anyone with
-					permission to see the post</em>, taking account of blocks.
+					下面的选项中的“任何人”指的是<em>任何可以看到嘟嘟的人</em>，被屏蔽的人已被排除在外。
 					<br/>
-					Bear in mind that no matter what you set below, you will always
-					be able to like, reply-to, and boost your own posts.
+					请记住，无论你设置什么，你总是可以点赞、回复和转嘟你自己的嘟文。
 				</p>
 				<a
-					href="https://docs.gotosocial.org/en/latest/user_guide/settings#default-interaction-policies"
+					href="https://docs.gotosocial.org/zh-cn/latest/user_guide/settings#default-interaction-policies"
 					target="_blank"
 					className="docslink"
 					rel="noreferrer"
 				>
-					Learn more about these settings (opens in a new tab)
+					了解更多关于这些设置的信息（在新标签页中打开）
 				</a>
 			</div>
 			<div className="tabbable-sections">
@@ -170,7 +166,7 @@ function InteractionPoliciesForm({ defaultPolicies }: InteractionPoliciesFormPro
 			<div className="action-buttons row">
 				<MutationButton
 					disabled={false}
-					label="Save policies"
+					label="保存设置"
 					result={updateResult}
 				/>
 
@@ -178,7 +174,7 @@ function InteractionPoliciesForm({ defaultPolicies }: InteractionPoliciesFormPro
 					disabled={false}
 					type="button"
 					onClick={() => resetPolicies()}
-					label="Reset to defaults"
+					label="重置为默认"
 					result={resetResult}
 					className="button danger"
 					showError={false}
@@ -195,17 +191,17 @@ function PolicyPanelsTablist({ selectedVis }: { selectedVis: TextFormInputHook})
 		<div className="tab-buttons" role="tablist">
 			<Tab
 				thisVisibility="public"
-				label="Public"
+				label="公开"
 				selectedVis={selectedVis}
 			/>
 			<Tab
 				thisVisibility="unlisted"
-				label="Unlisted"
+				label="不列出"
 				selectedVis={selectedVis}
 			/>
 			<Tab
 				thisVisibility="private"
-				label="Followers-only"
+				label="仅粉丝可见"
 				selectedVis={selectedVis}
 			/>
 		</div>
@@ -293,7 +289,7 @@ function PolicyComponent({ form, forAction }: PolicyComponentProps) {
 			{ forAction === "reply" &&
 				<div className="info">
 					<i className="fa fa-fw fa-info-circle" aria-hidden="true"></i>
-					<b>Mentioned accounts can always reply.</b>
+					<b>被提及的人可以随时回复。</b>
 				</div>	
 			}
 			<Select
@@ -352,21 +348,21 @@ function useLegend(action: Action) {
 				return (
 					<>
 						<i className="fa fa-fw fa-star" aria-hidden="true"></i>
-						<span>Like</span>
+						<span>点赞</span>
 					</>
 				);
 			case "reply":
 				return (
 					<>
 						<i className="fa fa-fw fa-reply-all" aria-hidden="true"></i>
-						<span>Reply</span>
+						<span>回复</span>
 					</>
 				);
 			case "reblog":
 				return (
 					<>
 						<i className="fa fa-fw fa-retweet" aria-hidden="true"></i>
-						<span>Boost</span>
+						<span>转嘟</span>
 					</>
 				);
 		}

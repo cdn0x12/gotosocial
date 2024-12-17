@@ -92,8 +92,8 @@ export default function HeaderPermsOverview() {
 		<div className="info">
 			<i className="fa fa-fw fa-info-circle" aria-hidden="true"></i>
 			<b>
-				No HTTP header {permType}s exist yet.
-				You can create one using the form below.
+				目前没有 HTTP 标头 {permType}s 规则。
+				您可以使用下面的表单创建一个。
 			</b>
 		</div>
 	);
@@ -124,32 +124,30 @@ export default function HeaderPermsOverview() {
 	return (
 		<div className="http-header-permissions">
 			<div className="form-section-docs">
-				<h1>HTTP Header {permTypeUpper}s</h1>
+				<h1>HTTP 标头 {permTypeUpper} 规则</h1>
 				<p>
-					On this page, you can view, create, and remove HTTP header {permType} entries,
+					在这个页面，您可以查看、创建和移除 HTTP 标头 {permType} 规则，
 					<br/>
-					Blocks and allows have different effects depending on the value you've set
-					for <code>advanced-header-filter-mode</code> in your instance configuration.
+					屏蔽和放行规则在 <code>advanced-header-filter-mode</code> 实例配置中设置的值不同。
 					<br/>
 					{ permType === "block" && <>
 						<strong>
-							When running in <code>block</code> mode, be very careful when creating
-							your value regexes, as a too-broad match can cause your instance to
-							deny all requests, locking you out of this settings panel.
+							当运行在 <code>block</code> 模式时，创建正则表达式时请非常小心，
+							因为过于宽泛的匹配可能会导致实例拒绝所有请求，
+							从而锁定您无法访问此设置页面。
 						</strong>
 						<br/>
-						If you do this by accident, you can fix it by stopping your instance,
-						changing <code>advanced-header-filter-mode</code> to an empty string
-						(disabled), starting your instance again, and removing the block.
+						如果您不小心这样做，可以通过停止实例，将 <code>advanced-header-filter-mode</code> 设置为空字符串
+						(禁用)，然后重新启动实例，并移除屏蔽规则来修复。
 					</> }
 				</p>
 				<a
-					href="https://docs.gotosocial.org/en/latest/admin/request_filtering_modes/"
+					href="https://docs.gotosocial.org/zh-cn/latest/admin/request_filtering_modes/"
 					target="_blank"
 					className="docslink"
 					rel="noreferrer"
 				>
-					Learn more about HTTP request filtering (opens in a new tab)
+					了解更多关于 HTTP 请求过滤的信息 (在新的标签页中打开)
 				</a>
 			</div>
 			<PageableList

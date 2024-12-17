@@ -33,7 +33,7 @@ export default function UserLogoutCard() {
 	}
 	
 	if (!profile) {
-		return <ErrorC error={new Error("account was undefined")} />;
+		return <ErrorC error={new Error("账户未定义")} />;
 	}
 
 	return (
@@ -41,7 +41,7 @@ export default function UserLogoutCard() {
 			<img className="avatar" src={profile.avatar} alt="" />
 			<h3 className="text-cutoff">{profile.display_name?.length > 0 ? profile.display_name : profile.acct}</h3>
 			<span className="text-cutoff">@{profile.username}@{instance?.account_domain}</span>
-			<a onClick={logoutQuery} href="#" aria-label="Log out" title="Log out" className="logout">
+			<a onClick={logoutQuery} href="#" aria-label="退出登录" title="退出登录" className="logout">
 				<i className="fa fa-fw fa-sign-out" aria-hidden="true" />
 			</a>
 		</div>

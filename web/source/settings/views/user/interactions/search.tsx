@@ -115,20 +115,20 @@ export default function InteractionRequestsSearchForm() {
 				autoComplete="off"
 			>
 				<Checkbox
-					label="Include likes"
+					label="包含点赞"
 					field={form.likes}
 				/>
 				<Checkbox
-					label="Include replies"
+					label="包含回复"
 					field={form.replies}
 				/>
 				<Checkbox
-					label="Include boosts"
+					label="包含转嘟"
 					field={form.boosts}
 				/>
 				<MutationButton
 					disabled={false}
-					label={"Search"}
+					label={"搜索"}
 					result={searchRes}
 				/>
 			</form>
@@ -140,7 +140,7 @@ export default function InteractionRequestsSearchForm() {
 				itemToEntry={itemToEntry}
 				isError={searchRes.isError}
 				error={searchRes.error}
-				emptyMessage={<b>No interaction requests found that match your query.</b>}
+				emptyMessage={<b>没有找到与你的搜索条件匹配的互动请求。</b>}
 				prevNextLinks={searchRes.data?.links}
 			/>
 		</>
@@ -164,11 +164,11 @@ function ReqsListEntry({ req, linkTo, backLocation }: ReqsListEntryProps) {
 	const icon = useIcon(req.type);
 	
 	const strap = useMemo(() => {
-		return "@" + req.account.acct + " " + verbed + " your post.";
+		return "@" + req.account.acct + " " + verbed + " 你的嘟嘟。";
 	}, [req.account, verbed]);
 	
 	const label = useMemo(() => {
-		return noun + " from @" + req.account.acct;
+		return noun + " 来自 @" + req.account.acct;
 	}, [req.account, noun]);
 
 	const ourContent = useContent(req.status);
@@ -200,14 +200,14 @@ function ReqsListEntry({ req, linkTo, backLocation }: ReqsListEntryProps) {
 			</span>
 			<dl className="info-list">
 				<div className="info-list-entry">
-					<dt>You wrote:</dt>
+					<dt>你写的是：</dt>
 					<dd className="text-cutoff">
 						{ourContent}
 					</dd>
 				</div>
 				{ req.type === "reply" &&
 					<div className="info-list-entry">
-						<dt>They wrote:</dt>
+						<dt>Ta回复的是：</dt>
 						<dd className="text-cutoff">
 							{theirContent}
 						</dd>
@@ -217,7 +217,7 @@ function ReqsListEntry({ req, linkTo, backLocation }: ReqsListEntryProps) {
 			<div className="action-buttons">
 				<MutationButton
 					label="Accept"
-					title={`Accept ${noun}`}
+					title={`接受 ${noun}`}
 					type="button"
 					className="button"
 					onClick={(e) => {
@@ -232,7 +232,7 @@ function ReqsListEntry({ req, linkTo, backLocation }: ReqsListEntryProps) {
 
 				<MutationButton
 					label="Reject"
-					title={`Reject ${noun}`}
+					title={`拒绝 ${noun}`}
 					type="button"
 					className="button danger"
 					onClick={(e) => {

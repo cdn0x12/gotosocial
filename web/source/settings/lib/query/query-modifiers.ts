@@ -55,8 +55,8 @@ function makeCacheMutation(action: Action): CacheMutation {
 				
 				if (queryName == "") {
 					throw (
-						"provided queryName resolved to an empty string;" +
-						"double check your mutation definition!"
+						"提供的 queryName 解析为空字符串;" +
+						"请检查您的 mutation 定义!"
 					);
 				}
 
@@ -90,7 +90,7 @@ function makeCacheMutation(action: Action): CacheMutation {
 					);
 				} catch (e) {
 					// eslint-disable-next-line no-console
-					console.error(`rolling back pessimistic update of ${queryName}: ${JSON.stringify(e)}`);
+					console.error(`回滚悲观更新 ${queryName}: ${JSON.stringify(e)}`);
 				}
 			}
 		};

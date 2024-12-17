@@ -40,7 +40,7 @@ export default function HeaderPermCreateForm({ permType }: { permType: PermType 
 				// Only requirement is that header
 				// must be less than 1024 chars.
 				if (val.length > 1024) {
-					return "header must be less than 1024 characters";
+					return "标头名必须小于 1024 个字符";
 				}
 
 				return "";
@@ -95,19 +95,19 @@ export default function HeaderPermCreateForm({ permType }: { permType: PermType 
 
 	return (
 		<form onSubmit={formSubmit}>
-			<h2>Create new HTTP header {permType}</h2>
+			<h2>创建新的 HTTP 标头 {permType}</h2>
 			<TextInput
 				field={form.header}
 				label={
 					<>
-						Header Name&nbsp;
+						标头名&nbsp;
 						 <a
 							href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers"
 							target="_blank"
 							className="docslink"
 							rel="noreferrer"
 						>
-							Learn more about HTTP request headers (opens in a new tab)
+							了解关于 HTTP 请求标头的更多内容 (在新的标签页中打开)
 						</a>
 					</>
 				}
@@ -120,14 +120,14 @@ export default function HeaderPermCreateForm({ permType }: { permType: PermType 
 				field={form.regex}
 				label={
 					<>
-						Value Regex&nbsp;
+						标头值正则表达式&nbsp;
 						<a
 							href="https://github.com/google/re2/wiki/Syntax"
 							target="_blank"
 							className="docslink"
 							rel="noreferrer"
 						>
-							Learn more about RE2 regular expressions (opens in a new tab)
+							了解关于 RE2 正则表达式的更多内容 (在新的标签页中打开)
 						</a>
 					</>
 				}
@@ -137,7 +137,7 @@ export default function HeaderPermCreateForm({ permType }: { permType: PermType 
 				{...{className: "monospace"}}
 			/>
 			<MutationButton
-				label="Save"
+				label="保存"
 				result={result}
 				disabled={
 					(!form.header.value || !form.regex.value) ||

@@ -37,33 +37,33 @@ export default function Cleanup({}) {
 	return (
 		<form onSubmit={submitCleanup}>
 			<div className="form-section-docs">
-				<h2>Cleanup</h2>
+				<h2>清理</h2>
 				<p>
-					Clean up remote media older than the specified number of days.
+					清理指定天数外的外站媒体。
 					<br/>
-					If the remote instance is still online they will be refetched when needed.
+					如果外站实例仍然在线，它们将在需要时被重新获取。
 					<br/>
-					Also cleans up unused headers and avatars from the media cache.
+					也清理未使用的头和头像。
 				</p>
 				<a
-					href="https://docs.gotosocial.org/en/latest/admin/media_caching/"
+					href="https://docs.gotosocial.org/zh-cn/latest/admin/media_caching/"
 					target="_blank"
 					className="docslink"
 					rel="noreferrer"
 				>
-					Learn more about media caching + cleanup (opens in a new tab)
+					了解更多 (在新标签页中打开)
 				</a>
 			</div>
 			<TextInput
 				field={daysField}
-				label="Days"
+				label="天数"
 				type="number"
 				min="0"
 				placeholder="30"
 			/>
 			<MutationButton
 				disabled={!daysField.value}
-				label="Remove old media"
+				label="清理旧媒体"
 				result={mediaCleanupResult}
 			/>
 		</form>

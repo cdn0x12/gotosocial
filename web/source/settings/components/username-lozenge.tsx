@@ -136,8 +136,8 @@ function ReadyUsernameLozenge({ account, linkTo, backLocation, classNames }: Rea
 	}
 
 	let icon = isLocal
-		? { fa: "fa-home", info: "Local user" }
-		: { fa: "fa-external-link-square", info: "Remote user" };
+		? { fa: "fa-home", info: "本站用户" }
+		: { fa: "fa-external-link-square", info: "外站用户" };
 
 	const content = (
 		<>

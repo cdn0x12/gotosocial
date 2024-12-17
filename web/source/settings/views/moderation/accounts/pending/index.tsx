@@ -45,20 +45,19 @@ export default function AccountsPending() {
 	return (
 		<div className="accounts-view">
 			<div className="form-section-docs">
-				<h1>Pending Accounts</h1>
+				<h1>待审核账户</h1>
 				<p>
-					You can see a list of pending account sign-ups below.
+					你可以看到待审核账户的列表。
 					<br/>
-					To approve or reject a sign-up, click on the account's name in the
-					list, and use the controls at the bottom of the account detail view.
+					要批准或拒绝一个账户，请点击列表中的账户名称，然后使用账户详情页面底部的控件。
 				</p>
 				<a
-					href="https://docs.gotosocial.org/en/latest/admin/signups/"
+					href="https://docs.gotosocial.org/zh-cn/latest/admin/signups/"
 					target="_blank"
 					className="docslink"
 					rel="noreferrer"
 				>
-					Learn more about account sign-ups (opens in a new tab)
+					了解更多关于账户注册的信息 (在新标签页中打开)
 				</a>
 			</div>
 			<PageableList
@@ -69,7 +68,7 @@ export default function AccountsPending() {
 				itemToEntry={itemToEntry}
 				isError={searchRes.isError}
 				error={searchRes.error}
-				emptyMessage={<b>No pending account sign-ups.</b>}
+				emptyMessage={<b>没有待审核的账户。</b>}
 			/>
 		</div>
 	);

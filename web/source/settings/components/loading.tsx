@@ -21,6 +21,6 @@ import React from "react";
 
 export default function Loading() {
 	return (
-		<i className="fa fa-spin fa-refresh loading-icon" aria-label="Loading" title="Loading" />
+		<i className="fa fa-spin fa-refresh loading-icon" aria-label="Loading" title="加载中" />
 	);
 }

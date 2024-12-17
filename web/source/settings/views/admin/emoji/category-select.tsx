@@ -124,8 +124,8 @@ export function CategorySelect({ field, children }: PropsWithChildren<CategorySe
 			<ComboBox
 				field={field}
 				items={categoryItems}
-				label="Category"
-				placeholder="e.g., reactions"
+				label="分类"
+				placeholder="例如：回应"
 				autoCapitalize="none"
 				spellCheck="false"
 			>

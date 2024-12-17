@@ -44,11 +44,11 @@ export default function StealThisLook({ emojiCodes }) {
 
 	return (
 		<div className="parse-emoji">
-			<h2>Steal this look</h2>
+			<h2>偷表情</h2>
 			<form onSubmit={submitSearch}>
 				<div className="form-field text">
 					<label htmlFor="url">
-						Link to a status:
+						嘟文链接:
 					</label>
 					<div className="row">
 						<input
@@ -65,8 +65,8 @@ export default function StealThisLook({ emojiCodes }) {
 								(result.isLoading
 									? "fa-refresh fa-spin"
 									: "fa-search")
-							].join(" ")} aria-hidden="true" title="Search" />
-							<span className="sr-only">Search</span>
+							].join(" ")} aria-hidden="true" title="搜索" />
+							<span className="sr-only">搜索</span>
 						</button>
 					</div>
 				</div>
@@ -84,15 +84,15 @@ function SearchResult({ result, localEmojiCodes }) {
 	}
 
 	if (error == "NONE_FOUND") {
-		return "No results found";
+		return "没有找到结果";
 	} else if (error == "LOCAL_INSTANCE") {
-		return <b>This is a local user/status, all referenced emoji are already on your instance</b>;
+		return <b>这是本站用户/嘟文，所有引用的表情已经位于你的实例中</b>;
 	} else if (error != undefined) {
 		return <Error error={result.error} />;
 	}
 
 	if (data.list.length == 0) {
-		return <b>This {data.type == "statuses" ? "status" : "account"} doesn't use any custom emoji</b>;
+		return <b>这个{data.type == "statuses" ? "嘟文" : "用户"}没有使用任何自定义表情</b>;
 	}
 
 	return (
@@ -137,14 +137,14 @@ function CopyEmojiForm({ localEmojiCodes, type, emojiList }) {
 		}
 		: {
 			disabled: true,
-			title: "No emoji selected, cannot perform any actions"
+			title: "没有选中表情，无法执行任何操作"
 		};
 
 	const checkListExtraProps = useCallback(() => ({ localEmojiCodes }), [localEmojiCodes]);
 
 	return (
 		<div className="parsed">
-			<span>This {type == "statuses" ? "status" : "account"} uses the following custom emoji, select the ones you want to copy/disable:</span>
+			<span>这个{type == "statuses" ? "嘟文" : "用户"}使用了以下自定义表情，请选择你想要复制/禁用的表情：</span>
 			<form onSubmit={formSubmit}>
 				<CheckList
 					field={form.selectedEmoji}
@@ -161,14 +161,14 @@ function CopyEmojiForm({ localEmojiCodes, type, emojiList }) {
 				<div className="action-buttons row">
 					<MutationButton
 						name="copy"
-						label="Copy to local emoji"
+						label="复制到本站表情"
 						result={result}
 						showError={false}
 						{...buttonsInactive}
 					/>
 					<MutationButton
 						name="disable"
-						label="Disable"
+						label="禁用"
 						result={result}
 						className="button danger"
 						showError={false}
@@ -188,7 +188,7 @@ function CopyEmojiForm({ localEmojiCodes, type, emojiList }) {
 function ErrorList({ errors }) {
 	return (
 		<div className="error">
-			One or multiple emoji failed to process:
+			有一个或多个表情处理失败:
 			{errors.map(([shortcode, err]) => (
 				<div key={shortcode}>
 					<b>{shortcode}:</b> {err}
