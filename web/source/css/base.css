@@ -639,3 +639,19 @@ section.oob-token {
 		grid-row: 1 / span 2;
 	}
 }
+
+/* transition effect, basically for color scheme switching */
+* {
+	transition: background-color 0.2s ease,
+	            color 0.2s ease,
+	            border-color 0.2s ease;
+}
+
+/* respect user's reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  html,
+  body {
+    transition: none !important;
+  }
+}

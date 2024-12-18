@@ -128,11 +128,13 @@
 	cursor: pointer;
 	z-index: 1000;
 	opacity: 0.8;
-	transition: opacity 0.3s ease;
+	transition: opacity 0.2s ease,
+	            transform 0.2s ease;
 }
 
 .theme-toggle:hover {
 	opacity: 1;
+	transform: scale(1.1);
 }
 
 @media (max-width: 600px) {
