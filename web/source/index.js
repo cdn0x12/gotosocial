@@ -64,6 +64,12 @@ skulk({
 				}]
 			],
 		},
+		theme: {
+			entryFile: 'theme',
+			outputFile: 'theme.js',
+			preset: ['js'],
+			prodCfg: prodCfg
+		},
 		settings: {
 			entryFile: "settings",
 			outputFile: "settings.js",

@@ -69,6 +69,7 @@ image/webp
         {{- range .javascript }}
         <script type="text/javascript" src="{{- . -}}" async="" defer=""></script>
         {{- end }}
+        <script src="/assets/dist/theme.js"></script>
         <title>{{- template "instanceTitle" . -}}</title>
     </head>
     <body class="page">

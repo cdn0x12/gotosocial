@@ -56,6 +56,7 @@ Instance Logo
 {{- end -}}
 
 {{- with . }}
+<button id="theme-toggle" class="theme-toggle" aria-label="Switch theme">☀️</button>
 <a aria-label="{{- .instance.Title -}}. Go to instance homepage" href="/" class="nounderline">
     <picture>
         {{- if .instance.ThumbnailStatic }}

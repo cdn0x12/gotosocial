@@ -116,3 +116,28 @@
 		text-align: center;
 	}
 }
+
+.theme-toggle {
+	position: fixed;
+	top: 1rem;
+	right: 1rem;
+	padding: 0.5rem;
+	font-size: 1.5rem;
+	background: none;
+	border: none;
+	cursor: pointer;
+	z-index: 1000;
+	opacity: 0.8;
+	transition: opacity 0.3s ease;
+}
+
+.theme-toggle:hover {
+	opacity: 1;
+}
+
+@media (max-width: 600px) {
+	.theme-toggle {
+		top: 0.5rem;
+		right: 0.5rem;
+	}
+}
