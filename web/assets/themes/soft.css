@@ -17,7 +17,13 @@
   --blue3: #6b12ba;
   --orange2: var(--blue1);
   --br: 0.8rem;
-  --br-inner: 0.4rem; 
+  --br-inner: 0.4rem;
+  /* Use hardcoded grey as gray get restyled in light mode */
+  --white1: #fafaff;
+  --gray1: #2a2b2f;
+  --gray2: #35363b;
+  --gray3: #45464e;
+  --gray8: #696a75;
 
   /* Basic page styling (background + foreground) */
   --bg: var(--soft-pink);
