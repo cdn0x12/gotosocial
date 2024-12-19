@@ -14,9 +14,9 @@
     const html = document.documentElement
     
     if (theme === 'auto') {
-      const isLight = window.matchMedia('(prefers-color-scheme: light)').matches
-      html.classList.toggle('is-light', !isLight)
-      html.classList.toggle('is-dark', isLight)
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+      html.classList.toggle('is-dark', prefersDark)
+      html.classList.toggle('is-light', !prefersDark)
     } else {
       html.classList.toggle('is-dark', theme === 'dark')
       html.classList.toggle('is-light', theme === 'light')
@@ -70,8 +70,9 @@
     
     window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
       if (localStorage.getItem('theme') === 'auto') {
-        applyTheme(e.matches ? 'dark' : 'light')
-        updateThemeButton(e.matches ? 'dark' : 'light')
+        const isLight = !e.matches
+        html.classList.toggle('is-light', isLight)
+        html.classList.toggle('is-dark', !isLight)
       }
     })
   }
