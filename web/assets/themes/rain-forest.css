@@ -42,6 +42,9 @@
     /* «show more» button */
   --button-bg: var(--lesssunny);
   --button-fg: var(--dblue1);
+  /* enforce dark mode style */
+  --white1: #fafaff;
+  --white2: #b3b5c6;
 
   /* Used around statuses + other items */
   --boxshadow: 0 0.4rem 0.7rem -0.1rem rgba(252,220,42,0.15); /* subtle status glow */
@@ -85,6 +88,11 @@ box-shadow: none; /* no "glow" for buttons */
 }
 .profile .about-user .fields .field:first-child {
   border-top: 0.1rem solid var(--sunny);
+}
+
+.profile .statuses .rss-icon .fa {
+  background: linear-gradient(to right, var(--gray2) 100%, transparent 0) no-repeat center center;
+  background-size: 1.2rem 1.4rem;
 }
 
 /* Block quotes */
