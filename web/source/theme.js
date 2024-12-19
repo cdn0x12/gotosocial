@@ -7,24 +7,19 @@
       return storedTheme
     }
     
-    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      return 'dark'
-    }
-    
-    return 'light'
+    return 'auto'
   }
 
   function applyTheme(theme) {
     const html = document.documentElement
     
-    if (theme === 'dark') {
-      html.classList.add('is-dark')
-      html.classList.remove('is-light') 
-    } else if (theme === 'light') {
-      html.classList.add('is-light')
-      html.classList.remove('is-dark')
+    if (theme === 'auto') {
+      const isLight = window.matchMedia('(prefers-color-scheme: light)').matches
+      html.classList.toggle('is-light', !isLight)
+      html.classList.toggle('is-dark', isLight)
     } else {
-      html.classList.remove('is-dark', 'is-light')
+      html.classList.toggle('is-dark', theme === 'dark')
+      html.classList.toggle('is-light', theme === 'light')
     }
     
     localStorage.setItem('theme', theme)
@@ -32,7 +27,10 @@
 
   function toggleTheme() {
     const currentTheme = localStorage.getItem('theme') || 'auto'
-    const nextTheme = currentTheme === 'light' ? 'dark' : 'light'
+    const themeOrder = ['light', 'dark', 'auto']
+    const currentIndex = themeOrder.indexOf(currentTheme)
+    const nextTheme = themeOrder[(currentIndex + 1) % themeOrder.length]
+    
     applyTheme(nextTheme)
     updateThemeButton(nextTheme)
   }
@@ -41,8 +39,16 @@
     const button = document.getElementById('theme-toggle')
     if (!button) return
     
-    button.innerHTML = theme === 'dark' ? '🌙' : '☀️'
-    button.setAttribute('aria-label', `Switch to ${theme === 'dark' ? 'light' : 'dark'} theme`)
+    const icons = {
+      light: '☀️',
+      dark: '🌙',
+      auto: '🌓'
+    }
+    
+    button.innerHTML = icons[theme]
+    button.setAttribute('aria-label', `Switch to ${
+      theme === 'auto' ? 'light' : theme === 'light' ? 'dark' : 'auto'
+    } theme`)
   }
 
   const theme = localStorage.getItem('theme')
