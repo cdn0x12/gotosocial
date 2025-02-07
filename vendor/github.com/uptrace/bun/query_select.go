@@ -31,7 +31,8 @@ type SelectQuery struct {
 	having     []schema.QueryWithArgs
 	selFor     schema.QueryWithArgs
 
-	union []union
+	union   []union
+	comment string
 }
 
 var _ Query = (*SelectQuery)(nil)
@@ -40,8 +41,7 @@ func NewSelectQuery(db *DB) *SelectQuery {
 	return &SelectQuery{
 		whereBaseQuery: whereBaseQuery{
 			baseQuery: baseQuery{
-				db:   db,
-				conn: db.DB,
+				db: db,
 			},
 		},
 	}
@@ -72,12 +72,12 @@ func (q *SelectQuery) Apply(fns ...func(*SelectQuery) *SelectQuery) *SelectQuery
 	return q
 }
 
-func (q *SelectQuery) With(name string, query schema.QueryAppender) *SelectQuery {
+func (q *SelectQuery) With(name string, query Query) *SelectQuery {
 	q.addWith(name, query, false)
 	return q
 }
 
-func (q *SelectQuery) WithRecursive(name string, query schema.QueryAppender) *SelectQuery {
+func (q *SelectQuery) WithRecursive(name string, query Query) *SelectQuery {
 	q.addWith(name, query, true)
 	return q
 }
@@ -381,6 +381,43 @@ func (q *SelectQuery) Relation(name string, apply ...func(*SelectQuery) *SelectQ
 		return q
 	}
 
+	q.applyToRelation(join, apply...)
+
+	return q
+}
+
+type RelationOpts struct {
+	// Apply applies additional options to the relation.
+	Apply func(*SelectQuery) *SelectQuery
+	// AdditionalJoinOnConditions adds additional conditions to the JOIN ON clause.
+	AdditionalJoinOnConditions []schema.QueryWithArgs
+}
+
+// RelationWithOpts adds a relation to the query with additional options.
+func (q *SelectQuery) RelationWithOpts(name string, opts RelationOpts) *SelectQuery {
+	if q.tableModel == nil {
+		q.setErr(errNilModel)
+		return q
+	}
+
+	join := q.tableModel.join(name)
+	if join == nil {
+		q.setErr(fmt.Errorf("%s does not have relation=%q", q.table, name))
+		return q
+	}
+
+	if opts.Apply != nil {
+		q.applyToRelation(join, opts.Apply)
+	}
+
+	if len(opts.AdditionalJoinOnConditions) > 0 {
+		join.additionalJoinOnConditions = opts.AdditionalJoinOnConditions
+	}
+
+	return q
+}
+
+func (q *SelectQuery) applyToRelation(join *relationJoin, apply ...func(*SelectQuery) *SelectQuery) {
 	var apply1, apply2 func(*SelectQuery) *SelectQuery
 
 	if len(join.Relation.Condition) > 0 {
@@ -407,8 +444,6 @@ func (q *SelectQuery) Relation(name string, apply ...func(*SelectQuery) *SelectQ
 
 		return q
 	}
-
-	return q
 }
 
 func (q *SelectQuery) forEachInlineRelJoin(fn func(*relationJoin) error) error {
@@ -460,11 +495,21 @@ func (q *SelectQuery) selectJoins(ctx context.Context, joins []relationJoin) err
 
 //------------------------------------------------------------------------------
 
+// Comment adds a comment to the query, wrapped by /* ... */.
+func (q *SelectQuery) Comment(comment string) *SelectQuery {
+	q.comment = comment
+	return q
+}
+
+//------------------------------------------------------------------------------
+
 func (q *SelectQuery) Operation() string {
 	return "SELECT"
 }
 
 func (q *SelectQuery) AppendQuery(fmter schema.Formatter, b []byte) (_ []byte, err error) {
+	b = appendComment(b, q.comment)
+
 	return q.appendQuery(fmter, b, false)
 }
 
@@ -488,6 +533,13 @@ func (q *SelectQuery) appendQuery(
 
 	b, err = q.appendWith(fmter, b)
 	if err != nil {
+		return nil, err
+	}
+
+	if err := q.forEachInlineRelJoin(func(j *relationJoin) error {
+		j.applyTo(q)
+		return nil
+	}); err != nil {
 		return nil, err
 	}
 
@@ -684,8 +736,6 @@ func (q *SelectQuery) appendColumns(fmter schema.Formatter, b []byte) (_ []byte,
 func (q *SelectQuery) appendInlineRelColumns(
 	fmter schema.Formatter, b []byte, join *relationJoin,
 ) (_ []byte, err error) {
-	join.applyTo(q)
-
 	if join.columns != nil {
 		table := join.JoinModel.Table()
 		for i, col := range join.columns {
@@ -749,7 +799,7 @@ func (q *SelectQuery) Rows(ctx context.Context) (*sql.Rows, error) {
 	query := internal.String(queryBytes)
 
 	ctx, event := q.db.beforeQuery(ctx, q, query, nil, query, q.model)
-	rows, err := q.conn.QueryContext(ctx, query)
+	rows, err := q.resolveConn(q).QueryContext(ctx, query)
 	q.db.afterQuery(ctx, event, nil, err)
 	return rows, err
 }
@@ -802,6 +852,14 @@ func (q *SelectQuery) scanResult(ctx context.Context, dest ...interface{}) (sql.
 	model, err := q.getModel(dest)
 	if err != nil {
 		return nil, err
+	}
+	if len(dest) > 0 && q.tableModel != nil && len(q.tableModel.getJoins()) > 0 {
+		for _, j := range q.tableModel.getJoins() {
+			switch j.Relation.Type {
+			case schema.HasManyRelation, schema.ManyToManyRelation:
+				return nil, fmt.Errorf("When querying has-many or many-to-many relationships, you should use Model instead of the dest parameter in Scan.")
+			}
+		}
 	}
 
 	if q.table != nil {
@@ -877,7 +935,7 @@ func (q *SelectQuery) Count(ctx context.Context) (int, error) {
 	ctx, event := q.db.beforeQuery(ctx, qq, query, nil, query, q.model)
 
 	var num int
-	err = q.conn.QueryRowContext(ctx, query).Scan(&num)
+	err = q.resolveConn(q).QueryRowContext(ctx, query).Scan(&num)
 
 	q.db.afterQuery(ctx, event, nil, err)
 
@@ -895,13 +953,15 @@ func (q *SelectQuery) ScanAndCount(ctx context.Context, dest ...interface{}) (in
 			return int(n), nil
 		}
 	}
-	if _, ok := q.conn.(*DB); ok {
-		return q.scanAndCountConc(ctx, dest...)
+	if q.conn == nil {
+		return q.scanAndCountConcurrently(ctx, dest...)
 	}
 	return q.scanAndCountSeq(ctx, dest...)
 }
 
-func (q *SelectQuery) scanAndCountConc(ctx context.Context, dest ...interface{}) (int, error) {
+func (q *SelectQuery) scanAndCountConcurrently(
+	ctx context.Context, dest ...interface{},
+) (int, error) {
 	var count int
 	var wg sync.WaitGroup
 	var mu sync.Mutex
@@ -979,7 +1039,7 @@ func (q *SelectQuery) selectExists(ctx context.Context) (bool, error) {
 	ctx, event := q.db.beforeQuery(ctx, qq, query, nil, query, q.model)
 
 	var exists bool
-	err = q.conn.QueryRowContext(ctx, query).Scan(&exists)
+	err = q.resolveConn(q).QueryRowContext(ctx, query).Scan(&exists)
 
 	q.db.afterQuery(ctx, event, nil, err)
 

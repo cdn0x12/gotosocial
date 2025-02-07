@@ -19,6 +19,7 @@
 package config
 
 import (
+	"net/netip"
 	"time"
 
 	"codeberg.org/gruf/go-bytesize"
@@ -999,6 +1000,87 @@ func GetInstanceLanguages() language.Languages { return global.GetInstanceLangua
 
 // SetInstanceLanguages safely sets the value for global configuration 'InstanceLanguages' field
 func SetInstanceLanguages(v language.Languages) { global.SetInstanceLanguages(v) }
+
+// GetInstanceSubscriptionsProcessFrom safely fetches the Configuration value for state's 'InstanceSubscriptionsProcessFrom' field
+func (st *ConfigState) GetInstanceSubscriptionsProcessFrom() (v string) {
+	st.mutex.RLock()
+	v = st.config.InstanceSubscriptionsProcessFrom
+	st.mutex.RUnlock()
+	return
+}
+
+// SetInstanceSubscriptionsProcessFrom safely sets the Configuration value for state's 'InstanceSubscriptionsProcessFrom' field
+func (st *ConfigState) SetInstanceSubscriptionsProcessFrom(v string) {
+	st.mutex.Lock()
+	defer st.mutex.Unlock()
+	st.config.InstanceSubscriptionsProcessFrom = v
+	st.reloadToViper()
+}
+
+// InstanceSubscriptionsProcessFromFlag returns the flag name for the 'InstanceSubscriptionsProcessFrom' field
+func InstanceSubscriptionsProcessFromFlag() string { return "instance-subscriptions-process-from" }
+
+// GetInstanceSubscriptionsProcessFrom safely fetches the value for global configuration 'InstanceSubscriptionsProcessFrom' field
+func GetInstanceSubscriptionsProcessFrom() string {
+	return global.GetInstanceSubscriptionsProcessFrom()
+}
+
+// SetInstanceSubscriptionsProcessFrom safely sets the value for global configuration 'InstanceSubscriptionsProcessFrom' field
+func SetInstanceSubscriptionsProcessFrom(v string) { global.SetInstanceSubscriptionsProcessFrom(v) }
+
+// GetInstanceSubscriptionsProcessEvery safely fetches the Configuration value for state's 'InstanceSubscriptionsProcessEvery' field
+func (st *ConfigState) GetInstanceSubscriptionsProcessEvery() (v time.Duration) {
+	st.mutex.RLock()
+	v = st.config.InstanceSubscriptionsProcessEvery
+	st.mutex.RUnlock()
+	return
+}
+
+// SetInstanceSubscriptionsProcessEvery safely sets the Configuration value for state's 'InstanceSubscriptionsProcessEvery' field
+func (st *ConfigState) SetInstanceSubscriptionsProcessEvery(v time.Duration) {
+	st.mutex.Lock()
+	defer st.mutex.Unlock()
+	st.config.InstanceSubscriptionsProcessEvery = v
+	st.reloadToViper()
+}
+
+// InstanceSubscriptionsProcessEveryFlag returns the flag name for the 'InstanceSubscriptionsProcessEvery' field
+func InstanceSubscriptionsProcessEveryFlag() string { return "instance-subscriptions-process-every" }
+
+// GetInstanceSubscriptionsProcessEvery safely fetches the value for global configuration 'InstanceSubscriptionsProcessEvery' field
+func GetInstanceSubscriptionsProcessEvery() time.Duration {
+	return global.GetInstanceSubscriptionsProcessEvery()
+}
+
+// SetInstanceSubscriptionsProcessEvery safely sets the value for global configuration 'InstanceSubscriptionsProcessEvery' field
+func SetInstanceSubscriptionsProcessEvery(v time.Duration) {
+	global.SetInstanceSubscriptionsProcessEvery(v)
+}
+
+// GetInstanceStatsMode safely fetches the Configuration value for state's 'InstanceStatsMode' field
+func (st *ConfigState) GetInstanceStatsMode() (v string) {
+	st.mutex.RLock()
+	v = st.config.InstanceStatsMode
+	st.mutex.RUnlock()
+	return
+}
+
+// SetInstanceStatsMode safely sets the Configuration value for state's 'InstanceStatsMode' field
+func (st *ConfigState) SetInstanceStatsMode(v string) {
+	st.mutex.Lock()
+	defer st.mutex.Unlock()
+	st.config.InstanceStatsMode = v
+	st.reloadToViper()
+}
+
+// InstanceStatsModeFlag returns the flag name for the 'InstanceStatsMode' field
+func InstanceStatsModeFlag() string { return "instance-stats-mode" }
+
+// GetInstanceStatsMode safely fetches the value for global configuration 'InstanceStatsMode' field
+func GetInstanceStatsMode() string { return global.GetInstanceStatsMode() }
+
+// SetInstanceStatsMode safely sets the value for global configuration 'InstanceStatsMode' field
+func SetInstanceStatsMode(v string) { global.SetInstanceStatsMode(v) }
 
 // GetAccountsRegistrationOpen safely fetches the Configuration value for state's 'AccountsRegistrationOpen' field
 func (st *ConfigState) GetAccountsRegistrationOpen() (v bool) {
@@ -2625,6 +2707,35 @@ func GetAdvancedRateLimitExceptions() []string { return global.GetAdvancedRateLi
 // SetAdvancedRateLimitExceptions safely sets the value for global configuration 'AdvancedRateLimitExceptions' field
 func SetAdvancedRateLimitExceptions(v []string) { global.SetAdvancedRateLimitExceptions(v) }
 
+// GetAdvancedRateLimitExceptionsParsed safely fetches the Configuration value for state's 'AdvancedRateLimitExceptionsParsed' field
+func (st *ConfigState) GetAdvancedRateLimitExceptionsParsed() (v []netip.Prefix) {
+	st.mutex.RLock()
+	v = st.config.AdvancedRateLimitExceptionsParsed
+	st.mutex.RUnlock()
+	return
+}
+
+// SetAdvancedRateLimitExceptionsParsed safely sets the Configuration value for state's 'AdvancedRateLimitExceptionsParsed' field
+func (st *ConfigState) SetAdvancedRateLimitExceptionsParsed(v []netip.Prefix) {
+	st.mutex.Lock()
+	defer st.mutex.Unlock()
+	st.config.AdvancedRateLimitExceptionsParsed = v
+	st.reloadToViper()
+}
+
+// AdvancedRateLimitExceptionsParsedFlag returns the flag name for the 'AdvancedRateLimitExceptionsParsed' field
+func AdvancedRateLimitExceptionsParsedFlag() string { return "advanced-rate-limit-exceptions-parsed" }
+
+// GetAdvancedRateLimitExceptionsParsed safely fetches the value for global configuration 'AdvancedRateLimitExceptionsParsed' field
+func GetAdvancedRateLimitExceptionsParsed() []netip.Prefix {
+	return global.GetAdvancedRateLimitExceptionsParsed()
+}
+
+// SetAdvancedRateLimitExceptionsParsed safely sets the value for global configuration 'AdvancedRateLimitExceptionsParsed' field
+func SetAdvancedRateLimitExceptionsParsed(v []netip.Prefix) {
+	global.SetAdvancedRateLimitExceptionsParsed(v)
+}
+
 // GetAdvancedThrottlingMultiplier safely fetches the Configuration value for state's 'AdvancedThrottlingMultiplier' field
 func (st *ConfigState) GetAdvancedThrottlingMultiplier() (v int) {
 	st.mutex.RLock()
@@ -3185,6 +3296,37 @@ func GetCacheDomainPermissionDraftMemRation() float64 {
 // SetCacheDomainPermissionDraftMemRation safely sets the value for global configuration 'Cache.DomainPermissionDraftMemRation' field
 func SetCacheDomainPermissionDraftMemRation(v float64) {
 	global.SetCacheDomainPermissionDraftMemRation(v)
+}
+
+// GetCacheDomainPermissionSubscriptionMemRation safely fetches the Configuration value for state's 'Cache.DomainPermissionSubscriptionMemRation' field
+func (st *ConfigState) GetCacheDomainPermissionSubscriptionMemRation() (v float64) {
+	st.mutex.RLock()
+	v = st.config.Cache.DomainPermissionSubscriptionMemRation
+	st.mutex.RUnlock()
+	return
+}
+
+// SetCacheDomainPermissionSubscriptionMemRation safely sets the Configuration value for state's 'Cache.DomainPermissionSubscriptionMemRation' field
+func (st *ConfigState) SetCacheDomainPermissionSubscriptionMemRation(v float64) {
+	st.mutex.Lock()
+	defer st.mutex.Unlock()
+	st.config.Cache.DomainPermissionSubscriptionMemRation = v
+	st.reloadToViper()
+}
+
+// CacheDomainPermissionSubscriptionMemRationFlag returns the flag name for the 'Cache.DomainPermissionSubscriptionMemRation' field
+func CacheDomainPermissionSubscriptionMemRationFlag() string {
+	return "cache-domain-permission-subscription-mem-ratio"
+}
+
+// GetCacheDomainPermissionSubscriptionMemRation safely fetches the value for global configuration 'Cache.DomainPermissionSubscriptionMemRation' field
+func GetCacheDomainPermissionSubscriptionMemRation() float64 {
+	return global.GetCacheDomainPermissionSubscriptionMemRation()
+}
+
+// SetCacheDomainPermissionSubscriptionMemRation safely sets the value for global configuration 'Cache.DomainPermissionSubscriptionMemRation' field
+func SetCacheDomainPermissionSubscriptionMemRation(v float64) {
+	global.SetCacheDomainPermissionSubscriptionMemRation(v)
 }
 
 // GetCacheEmojiMemRatio safely fetches the Configuration value for state's 'Cache.EmojiMemRatio' field
@@ -4186,6 +4328,64 @@ func GetCacheWebfingerMemRatio() float64 { return global.GetCacheWebfingerMemRat
 
 // SetCacheWebfingerMemRatio safely sets the value for global configuration 'Cache.WebfingerMemRatio' field
 func SetCacheWebfingerMemRatio(v float64) { global.SetCacheWebfingerMemRatio(v) }
+
+// GetCacheWebPushSubscriptionMemRatio safely fetches the Configuration value for state's 'Cache.WebPushSubscriptionMemRatio' field
+func (st *ConfigState) GetCacheWebPushSubscriptionMemRatio() (v float64) {
+	st.mutex.RLock()
+	v = st.config.Cache.WebPushSubscriptionMemRatio
+	st.mutex.RUnlock()
+	return
+}
+
+// SetCacheWebPushSubscriptionMemRatio safely sets the Configuration value for state's 'Cache.WebPushSubscriptionMemRatio' field
+func (st *ConfigState) SetCacheWebPushSubscriptionMemRatio(v float64) {
+	st.mutex.Lock()
+	defer st.mutex.Unlock()
+	st.config.Cache.WebPushSubscriptionMemRatio = v
+	st.reloadToViper()
+}
+
+// CacheWebPushSubscriptionMemRatioFlag returns the flag name for the 'Cache.WebPushSubscriptionMemRatio' field
+func CacheWebPushSubscriptionMemRatioFlag() string { return "cache-web-push-subscription-mem-ratio" }
+
+// GetCacheWebPushSubscriptionMemRatio safely fetches the value for global configuration 'Cache.WebPushSubscriptionMemRatio' field
+func GetCacheWebPushSubscriptionMemRatio() float64 {
+	return global.GetCacheWebPushSubscriptionMemRatio()
+}
+
+// SetCacheWebPushSubscriptionMemRatio safely sets the value for global configuration 'Cache.WebPushSubscriptionMemRatio' field
+func SetCacheWebPushSubscriptionMemRatio(v float64) { global.SetCacheWebPushSubscriptionMemRatio(v) }
+
+// GetCacheWebPushSubscriptionIDsMemRatio safely fetches the Configuration value for state's 'Cache.WebPushSubscriptionIDsMemRatio' field
+func (st *ConfigState) GetCacheWebPushSubscriptionIDsMemRatio() (v float64) {
+	st.mutex.RLock()
+	v = st.config.Cache.WebPushSubscriptionIDsMemRatio
+	st.mutex.RUnlock()
+	return
+}
+
+// SetCacheWebPushSubscriptionIDsMemRatio safely sets the Configuration value for state's 'Cache.WebPushSubscriptionIDsMemRatio' field
+func (st *ConfigState) SetCacheWebPushSubscriptionIDsMemRatio(v float64) {
+	st.mutex.Lock()
+	defer st.mutex.Unlock()
+	st.config.Cache.WebPushSubscriptionIDsMemRatio = v
+	st.reloadToViper()
+}
+
+// CacheWebPushSubscriptionIDsMemRatioFlag returns the flag name for the 'Cache.WebPushSubscriptionIDsMemRatio' field
+func CacheWebPushSubscriptionIDsMemRatioFlag() string {
+	return "cache-web-push-subscription-ids-mem-ratio"
+}
+
+// GetCacheWebPushSubscriptionIDsMemRatio safely fetches the value for global configuration 'Cache.WebPushSubscriptionIDsMemRatio' field
+func GetCacheWebPushSubscriptionIDsMemRatio() float64 {
+	return global.GetCacheWebPushSubscriptionIDsMemRatio()
+}
+
+// SetCacheWebPushSubscriptionIDsMemRatio safely sets the value for global configuration 'Cache.WebPushSubscriptionIDsMemRatio' field
+func SetCacheWebPushSubscriptionIDsMemRatio(v float64) {
+	global.SetCacheWebPushSubscriptionIDsMemRatio(v)
+}
 
 // GetCacheVisibilityMemRatio safely fetches the Configuration value for state's 'Cache.VisibilityMemRatio' field
 func (st *ConfigState) GetCacheVisibilityMemRatio() (v float64) {

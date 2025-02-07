@@ -59,8 +59,15 @@ func (m *Module) indexHandler(c *gin.Context) {
 		Template:    "index.tmpl",
 		Instance:    instance,
 		OGMeta:      apiutil.OGBase(instance),
-		Stylesheets: []string{cssAbout, cssIndex, instanceCustomCSSPath},
-		Extra:       map[string]any{"showStrap": true},
+		Stylesheets: []string{cssAbout, cssIndex},
+		Extra: map[string]any{
+			// Render "home to x
+			// users [etc]" strap.
+			"showStrap": true,
+			// Show "log in" button
+			// in top-right corner.
+			"showLoginButton": true,
+		},
 	}
 
 	apiutil.TemplateWebPage(c, page)

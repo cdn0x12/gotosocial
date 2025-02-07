@@ -23,6 +23,7 @@ type UpdateQuery struct {
 
 	joins    []joinQuery
 	omitZero bool
+	comment  string
 }
 
 var _ Query = (*UpdateQuery)(nil)
@@ -31,8 +32,7 @@ func NewUpdateQuery(db *DB) *UpdateQuery {
 	q := &UpdateQuery{
 		whereBaseQuery: whereBaseQuery{
 			baseQuery: baseQuery{
-				db:   db,
-				conn: db.DB,
+				db: db,
 			},
 		},
 	}
@@ -64,12 +64,12 @@ func (q *UpdateQuery) Apply(fns ...func(*UpdateQuery) *UpdateQuery) *UpdateQuery
 	return q
 }
 
-func (q *UpdateQuery) With(name string, query schema.QueryAppender) *UpdateQuery {
+func (q *UpdateQuery) With(name string, query Query) *UpdateQuery {
 	q.addWith(name, query, false)
 	return q
 }
 
-func (q *UpdateQuery) WithRecursive(name string, query schema.QueryAppender) *UpdateQuery {
+func (q *UpdateQuery) WithRecursive(name string, query Query) *UpdateQuery {
 	q.addWith(name, query, true)
 	return q
 }
@@ -206,7 +206,7 @@ func (q *UpdateQuery) WhereAllWithDeleted() *UpdateQuery {
 // ------------------------------------------------------------------------------
 func (q *UpdateQuery) Order(orders ...string) *UpdateQuery {
 	if !q.hasFeature(feature.UpdateOrderLimit) {
-		q.err = errors.New("bun: order is not supported for current dialect")
+		q.err = feature.NewNotSupportError(feature.UpdateOrderLimit)
 		return q
 	}
 	q.addOrder(orders...)
@@ -215,7 +215,7 @@ func (q *UpdateQuery) Order(orders ...string) *UpdateQuery {
 
 func (q *UpdateQuery) OrderExpr(query string, args ...interface{}) *UpdateQuery {
 	if !q.hasFeature(feature.UpdateOrderLimit) {
-		q.err = errors.New("bun: order is not supported for current dialect")
+		q.err = feature.NewNotSupportError(feature.UpdateOrderLimit)
 		return q
 	}
 	q.addOrderExpr(query, args...)
@@ -224,7 +224,7 @@ func (q *UpdateQuery) OrderExpr(query string, args ...interface{}) *UpdateQuery 
 
 func (q *UpdateQuery) Limit(n int) *UpdateQuery {
 	if !q.hasFeature(feature.UpdateOrderLimit) {
-		q.err = errors.New("bun: limit is not supported for current dialect")
+		q.err = feature.NewNotSupportError(feature.UpdateOrderLimit)
 		return q
 	}
 	q.setLimit(n)
@@ -243,6 +243,14 @@ func (q *UpdateQuery) Returning(query string, args ...interface{}) *UpdateQuery 
 
 //------------------------------------------------------------------------------
 
+// Comment adds a comment to the query, wrapped by /* ... */.
+func (q *UpdateQuery) Comment(comment string) *UpdateQuery {
+	q.comment = comment
+	return q
+}
+
+//------------------------------------------------------------------------------
+
 func (q *UpdateQuery) Operation() string {
 	return "UPDATE"
 }
@@ -251,6 +259,8 @@ func (q *UpdateQuery) AppendQuery(fmter schema.Formatter, b []byte) (_ []byte, e
 	if q.err != nil {
 		return nil, q.err
 	}
+
+	b = appendComment(b, q.comment)
 
 	fmter = formatterWithModel(fmter, q)
 

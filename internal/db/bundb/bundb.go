@@ -41,9 +41,8 @@ import (
 	"github.com/superseriousbusiness/gotosocial/internal/db/bundb/migrations"
 	"github.com/superseriousbusiness/gotosocial/internal/gtsmodel"
 	"github.com/superseriousbusiness/gotosocial/internal/log"
-	"github.com/superseriousbusiness/gotosocial/internal/metrics"
+	"github.com/superseriousbusiness/gotosocial/internal/observability"
 	"github.com/superseriousbusiness/gotosocial/internal/state"
-	"github.com/superseriousbusiness/gotosocial/internal/tracing"
 	"github.com/uptrace/bun"
 	"github.com/uptrace/bun/dialect"
 	"github.com/uptrace/bun/dialect/pgdialect"
@@ -88,6 +87,7 @@ type DBService struct {
 	db.Timeline
 	db.User
 	db.Tombstone
+	db.WebPush
 	db.WorkerTask
 	db *bun.DB
 }
@@ -301,6 +301,10 @@ func NewBunDBService(ctx context.Context, state *state.State) (db.DB, error) {
 			db:    db,
 			state: state,
 		},
+		WebPush: &webPushDB{
+			db:    db,
+			state: state,
+		},
 		WorkerTask: &workerTaskDB{
 			db: db,
 		},
@@ -319,11 +323,10 @@ func bunDB(sqldb *sql.DB, dialect func() schema.Dialect) *bun.DB {
 
 	// Add our SQL connection hooks.
 	db.AddQueryHook(queryHook{})
-	if config.GetTracingEnabled() {
-		db.AddQueryHook(tracing.InstrumentBun())
-	}
-	if config.GetMetricsEnabled() {
-		db.AddQueryHook(metrics.InstrumentBun())
+	metricsEnabled := config.GetMetricsEnabled()
+	tracingEnabled := config.GetTracingEnabled()
+	if metricsEnabled || tracingEnabled {
+		db.AddQueryHook(observability.InstrumentBun(tracingEnabled, metricsEnabled))
 	}
 
 	// table registration is needed for many-to-many, see:

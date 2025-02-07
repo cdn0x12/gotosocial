@@ -15,9 +15,10 @@ type MergeQuery struct {
 	baseQuery
 	returningQuery
 
-	using schema.QueryWithArgs
-	on    schema.QueryWithArgs
-	when  []schema.QueryAppender
+	using   schema.QueryWithArgs
+	on      schema.QueryWithArgs
+	when    []schema.QueryAppender
+	comment string
 }
 
 var _ Query = (*MergeQuery)(nil)
@@ -25,8 +26,7 @@ var _ Query = (*MergeQuery)(nil)
 func NewMergeQuery(db *DB) *MergeQuery {
 	q := &MergeQuery{
 		baseQuery: baseQuery{
-			db:   db,
-			conn: db.DB,
+			db: db,
 		},
 	}
 	if q.db.dialect.Name() != dialect.MSSQL && q.db.dialect.Name() != dialect.PG {
@@ -60,12 +60,12 @@ func (q *MergeQuery) Apply(fns ...func(*MergeQuery) *MergeQuery) *MergeQuery {
 	return q
 }
 
-func (q *MergeQuery) With(name string, query schema.QueryAppender) *MergeQuery {
+func (q *MergeQuery) With(name string, query Query) *MergeQuery {
 	q.addWith(name, query, false)
 	return q
 }
 
-func (q *MergeQuery) WithRecursive(name string, query schema.QueryAppender) *MergeQuery {
+func (q *MergeQuery) WithRecursive(name string, query Query) *MergeQuery {
 	q.addWith(name, query, true)
 	return q
 }
@@ -150,6 +150,14 @@ func (q *MergeQuery) When(expr string, args ...interface{}) *MergeQuery {
 
 //------------------------------------------------------------------------------
 
+// Comment adds a comment to the query, wrapped by /* ... */.
+func (q *MergeQuery) Comment(comment string) *MergeQuery {
+	q.comment = comment
+	return q
+}
+
+//------------------------------------------------------------------------------
+
 func (q *MergeQuery) Operation() string {
 	return "MERGE"
 }
@@ -158,6 +166,8 @@ func (q *MergeQuery) AppendQuery(fmter schema.Formatter, b []byte) (_ []byte, er
 	if q.err != nil {
 		return nil, q.err
 	}
+
+	b = appendComment(b, q.comment)
 
 	fmter = formatterWithModel(fmter, q)
 

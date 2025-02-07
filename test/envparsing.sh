@@ -16,6 +16,7 @@ EXPECT=$(cat << "EOF"
         "192.0.2.0/24",
         "127.0.0.1/32"
     ],
+    "advanced-rate-limit-exceptions-parsed": null,
     "advanced-rate-limit-requests": 6969,
     "advanced-sender-multiplier": -1,
     "advanced-throttling-multiplier": -1,
@@ -35,6 +36,7 @@ EXPECT=$(cat << "EOF"
         "conversation-last-status-ids-mem-ratio": 2,
         "conversation-mem-ratio": 1,
         "domain-permission-draft-mem-ratio": 0.5,
+        "domain-permission-subscription-mem-ratio": 0.5,
         "emoji-category-mem-ratio": 0.1,
         "emoji-mem-ratio": 3,
         "filter-keyword-mem-ratio": 0.5,
@@ -76,6 +78,8 @@ EXPECT=$(cat << "EOF"
         "user-mute-ids-mem-ratio": 3,
         "user-mute-mem-ratio": 2,
         "visibility-mem-ratio": 2,
+        "web-push-subscription-ids-mem-ratio": 1,
+        "web-push-subscription-mem-ratio": 1,
         "webfinger-mem-ratio": 0.1
     },
     "config-path": "internal/config/testdata/test.yaml",
@@ -114,6 +118,9 @@ EXPECT=$(cat << "EOF"
         "nl",
         "en-GB"
     ],
+    "instance-stats-mode": "baffle",
+    "instance-subscriptions-process-every": 86400000000000,
+    "instance-subscriptions-process-from": "23:00",
     "landing-page-user": "admin",
     "letsencrypt-cert-dir": "/gotosocial/storage/certs",
     "letsencrypt-email-address": "",
@@ -242,6 +249,7 @@ GTS_INSTANCE_FEDERATION_SPAM_FILTER=true \
 GTS_INSTANCE_DELIVER_TO_SHARED_INBOXES=false \
 GTS_INSTANCE_INJECT_MASTODON_VERSION=true \
 GTS_INSTANCE_LANGUAGES="nl,en-gb" \
+GTS_INSTANCE_STATS_MODE="baffle" \
 GTS_ACCOUNTS_ALLOW_CUSTOM_CSS=true \
 GTS_ACCOUNTS_CUSTOM_CSS_LENGTH=5000 \
 GTS_ACCOUNTS_REGISTRATION_OPEN=true \

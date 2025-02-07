@@ -1,3 +1,67 @@
+## [1.2.9](https://github.com/uptrace/bun/compare/v1.2.8...v1.2.9) (2025-01-26)
+
+
+### Bug Fixes
+
+* apply join condition to select with count ([e77b9e7](https://github.com/uptrace/bun/commit/e77b9e72fa5ae8e173d506a4e154ba64214c4aff)), closes [#597](https://github.com/uptrace/bun/issues/597)
+* build ([702e525](https://github.com/uptrace/bun/commit/702e525e30ec93b6d4611359518e1008b67744af))
+* individual replica timeout ([9f5e8b1](https://github.com/uptrace/bun/commit/9f5e8b1c46673bd1779bd4309a28db33dcd695bf))
+* test ([dfc4059](https://github.com/uptrace/bun/commit/dfc405901907419d043bb6ced3ad20c131c1b972))
+
+
+### Features
+
+* add feature flag AlterColumnExists ([fc35e12](https://github.com/uptrace/bun/commit/fc35e1222242b3d581f0b7496a9021aadfc50b07)), closes [#704](https://github.com/uptrace/bun/issues/704)
+* add Options ([815e11a](https://github.com/uptrace/bun/commit/815e11a023d2babf65d528a20ddffc7628636e7e))
+* allow to specify read-only replica for SELECTs ([cbbe1e9](https://github.com/uptrace/bun/commit/cbbe1e94fd0c72d1870395a663c8053d7e8c6ace))
+* downgrade to use the field in has-many-relation ([91e0d27](https://github.com/uptrace/bun/commit/91e0d2719a5a20b3208cea0232e2dbcb452d6c23)), closes [#1107](https://github.com/uptrace/bun/issues/1107)
+* make WithReadOnlyReplica variadic ([4cbb15a](https://github.com/uptrace/bun/commit/4cbb15a53e566e03284253aa46be372338968954))
+* **pgdialect:** allow to convert uint to int ([7d22ddd](https://github.com/uptrace/bun/commit/7d22ddd263b28b9fd6e172e0208c124b7c56f111))
+* **pgdriver:** improve otel instrumentation ([c40e4f3](https://github.com/uptrace/bun/commit/c40e4f3c50c710903236dc89b56a843a0351a21a))
+
+
+
+## [1.2.8](https://github.com/uptrace/bun/compare/v1.2.7...v1.2.8) (2025-01-06)
+
+
+### Bug Fixes
+
+* comment string zero bytes filtering ([34dfd68](https://github.com/uptrace/bun/commit/34dfd684e371c24b9f59e9b13ef57660931f0bde))
+* get m2m table's structKey with driver.Valuer ([f107314](https://github.com/uptrace/bun/commit/f1073147dc73d01dcf8a6ee9252d354ff06a1062)), closes [#1100](https://github.com/uptrace/bun/issues/1100)
+* return error when use dest with has-many/many-to-many ([8296774](https://github.com/uptrace/bun/commit/829677486b502e6d5d2ae37814488ae9f2c7386e)), closes [#606](https://github.com/uptrace/bun/issues/606)
+* support scan float32 to float32/float64 ([a52e733](https://github.com/uptrace/bun/commit/a52e7339a93f84468878dcaffc42536faa44efae)), closes [#1087](https://github.com/uptrace/bun/issues/1087)
+
+
+### Features
+
+* add RelationWithOpts method to SelectQuery ([dd3ef52](https://github.com/uptrace/bun/commit/dd3ef522c8a9c656958b73ee5d546854fb7c6edf))
+* enhance debugging by adding query comments in headers ([1376d18](https://github.com/uptrace/bun/commit/1376d1870bfe3d89e3630203787f1e87c503d5df))
+* sort fields by struct ([5edb672](https://github.com/uptrace/bun/commit/5edb672e320be9b210f06d25c4f4b9e761c1c526)), closes [#1095](https://github.com/uptrace/bun/issues/1095)
+
+
+
+## [1.2.7](https://github.com/uptrace/bun/compare/v1.2.6...v1.2.7) (2025-01-01)
+
+
+### Bug Fixes
+
+* do not create new migrations if nothing to migrate ([5cc961d](https://github.com/uptrace/bun/commit/5cc961d6cc461ad3534728fc4d3cae12bf8b736e))
+* has many relation with driver.Valuer ([cb8c42c](https://github.com/uptrace/bun/commit/cb8c42cd3f65d95865c76a594abad815eea1df3c))
+* improve range type to support driver.Valuer and sql.Scanner ([856e12b](https://github.com/uptrace/bun/commit/856e12b0d37275a6aa247370f6a8231fd89ca3e7))
+* pass correct 'transactional' parameter ([ebdef1b](https://github.com/uptrace/bun/commit/ebdef1b0e9d33a5ca475ab4c2ec2fb44d11d4595))
+* **pgdialect:** remove unsigned integer conversion ([ab3c679](https://github.com/uptrace/bun/commit/ab3c679d529dd20d44e789dc6f1d89f9510bde0b)), closes [uptrace/bun#624](https://github.com/uptrace/bun/issues/624)
+* remove unused param on table.go and tables.go: canAddr ([d563e2d](https://github.com/uptrace/bun/commit/d563e2dbe95caeb0e00ad1b3e82283431747fe7b))
+* replace the link to docs repo in CONTRIBUTING.md ([e120096](https://github.com/uptrace/bun/commit/e12009662ae1ddefcc1337cc5e32e73d77c7def0))
+* trim surrounding '' in string literal in DEFAULT clause ([a0dff72](https://github.com/uptrace/bun/commit/a0dff72b6ab0ca24d00c96c923046200dd6112ed))
+
+
+### Features
+
+* add an ordered map to remove unnecessary dependencies ([9fea143](https://github.com/uptrace/bun/commit/9fea1437d8344d836670e802fd12d3476e8cad86))
+* support disable dialect's feature ([5343bd7](https://github.com/uptrace/bun/commit/5343bd7fc4ceda866a7d607388ebb7a89f7f5823))
+
+
+
 ## [1.2.6](https://github.com/uptrace/bun/compare/v1.2.5...v1.2.6) (2024-11-20)
 
 

@@ -225,10 +225,11 @@ Simply download the binary + assets (or Docker container), tweak your configurat
 
 ### Safety + security features
 
-- Built-in, automatic support for secure HTTPS with [Let's Encrypt](https://letsencrypt.org/).
-- Strict privacy enforcement for posts and strict blocking logic.
-- Import and export allow lists and deny lists. Subscribe to community-created block lists (think Ad blocker, but for federation!) (feature still in progress).
+- Strict privacy enforcement for posts, and strict blocking logic.
+- [Choose the visibility of posts on the web view of your profile](https://docs.gotosocial.org/en/latest/user_guide/settings/#visibility-level-of-posts-to-show-on-your-profile).
+- [Import, export](https://docs.gotosocial.org/en/latest/admin/settings/#importexport), and [subscribe](https://docs.gotosocial.org/en/latest/admin/domain_permission_subscriptions) to community-created domain allow and domain block lists.
 - HTTP signature authentication: GoToSocial requires [HTTP Signatures](https://datatracker.ietf.org/doc/html/draft-cavage-http-signatures-12) when sending and receiving messages, to ensure that your messages can't be tampered with and your identity can't be forged.
+- Built-in, automatic support for secure HTTPS with [Let's Encrypt](https://letsencrypt.org/).
 
 ### Various federation modes
 
@@ -275,19 +276,32 @@ Platforms that we don't officially support *may* still work, but we can't test o
 
 This is the current status of support offered by GoToSocial for different platforms (if something is unlisted it means we haven't checked yet so we don't know):
 
-| OS      | Architecture            | Support level                      | Binary archive | Docker container |
-| ------- | ----------------------- | ---------------------------------- | -------------- | ---------------- |
-| Linux   | x86-64/AMD64 (64-bit)   | 🟢 Full                            | Yes            | Yes              |
-| Linux   | Armv8/ARM64 (64-bit)    | 🟢 Full                            | Yes            | Yes              |
-| FreeBSD | x86-64/AMD64 (64-bit)   | 🟢 Full<sup>[1](#freebsd)</sup>    | Yes            | No               |
-| Linux   | x86-32/i386 (32-bit)    | 🟡 Partial<sup>[2](#32-bit)</sup>  | Yes            | Yes              |
-| Linux   | Armv7/ARM32 (32-bit)    | 🟡 Partial<sup>[2](#32-bit)</sup>  | Yes            | Yes              |
-| Linux   | Armv6/ARM32 (32-bit)    | 🟡 Partial<sup>[2](#32-bit)</sup>  | Yes            | Yes              |
-| OpenBSD | Any                     | 🔴 None<sup>[3](#openbsd)</sup>    | No             | No               |
+| OS      | Architecture            | Support level                             | Binary archive | Docker container |
+| ------- | ----------------------- | ----------------------------------------- | -------------- | ---------------- |
+| Linux   | x86-64/AMD64 (64-bit)   | 🟢 Full<sup>[1](#64-bit)</sup>            | Yes            | Yes              |
+| Linux   | Armv8/ARM64  (64-bit)   | 🟢 Full<sup>[1](#64-bit)</sup>            | Yes            | Yes              |
+| FreeBSD | x86-64/AMD64 (64-bit)   | 🟢 Full<sup>[1](#64-bit),[2](#bsds)</sup> | Yes            | No               |
+| FreeBSD | Armv8/ARM64  (64-bit)   | 🟢 Full<sup>[1](#64-bit),[2](#bsds)</sup> | Yes            | No               |
+| NetBSD  | x86-64/AMD64 (64-bit)   | 🟢 Full<sup>[1](#64-bit),[2](#bsds)</sup> | Yes            | No               |
+| NetBSD  | Armv8/ARM64  (64-bit)   | 🟢 Full<sup>[1](#64-bit),[2](#bsds)</sup> | Yes            | No               |
+| Linux   | x86-32/i386 (32-bit)    | 🟡 Partial<sup>[3](#32-bit)</sup>         | Yes            | Yes              |
+| Linux   | Armv7/ARM32 (32-bit)    | 🟡 Partial<sup>[3](#32-bit)</sup>         | Yes            | Yes              |
+| Linux   | Armv6/ARM32 (32-bit)    | 🟡 Partial<sup>[3](#32-bit)</sup>         | Yes            | Yes              |
+| OpenBSD | Any                     | 🔴 None<sup>[4](#openbsd)</sup>           | No             | No               |
 
-#### FreeBSD
+#### 64-bit
 
-Mostly works, just a few issues with WASM SQLite; check release notes carefully when installing on FreeBSD. If running with Postgres you should have no issues.
+64-bit platforms require the following (now, very common) CPU features:
+
+- x86-64 require SSE4.1 (for both media decoding and WASM SQLite)
+
+- Armv8 require ARM64 Large System Extensions (specifically when using WASM SQLite)
+
+Without these features, performance will suffer. In these situations, you may have some success building a binary yourself with the totally **unsupported, experimental** [nowasm](https://docs.gotosocial.org/en/latest/advanced/builds/nowasm/) tag.
+
+#### BSDs
+
+Mostly works, just [a few things to keep in mind](https://github.com/ncruces/go-sqlite3/wiki/Support-matrix) with WASM SQLite; check release notes carefully when installing on NetBSD or FreeBSD. If running with Postgres you should have no issues.
 
 #### 32-bit
 
@@ -295,11 +309,11 @@ GtS doesn't work well on 32-bit systems like i386, or Armv6/v7, mainly due to pe
 
 We don't recommend running GtS on 32-bit, but you may have some success either turning off remote media processing altogether, or building a binary yourself with the totally **unsupported, experimental** [nowasm](https://docs.gotosocial.org/en/latest/advanced/builds/nowasm/) tag.
 
-For more guidance, check release notes when trying to install on 32-bit. 
+For more guidance, check release notes when trying to install on 32-bit.
 
 #### OpenBSD
 
-Marked as unsupported due to performance issues (high memory usage when idle, crashes while processing media).
+Marked as unsupported due to performance issues (no WASM compiler, high memory usage when idle, crashes while processing media).
 
 While we don't support running GtS on OpenBSD, you may have some success building a binary yourself with the totally **unsupported, experimental** [nowasm](https://docs.gotosocial.org/en/latest/advanced/builds/nowasm/) tag.
 

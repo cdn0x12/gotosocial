@@ -35,6 +35,7 @@ import (
 	"github.com/superseriousbusiness/gotosocial/internal/log"
 	"github.com/superseriousbusiness/gotosocial/internal/media"
 	"github.com/superseriousbusiness/gotosocial/internal/util"
+	"github.com/superseriousbusiness/gotosocial/internal/util/xslices"
 )
 
 // statusFresh returns true if the given status is still
@@ -504,6 +505,12 @@ func (d *Dereferencer) enrichStatus(
 		latestStatus.ID = id.NewULIDFromTime(latestStatus.CreatedAt)
 	} else {
 
+		// Ensure that status isn't trying to re-date itself.
+		if !latestStatus.CreatedAt.Equal(status.CreatedAt) {
+			err := gtserror.Newf("status %s 'published' changed", uri)
+			return nil, nil, gtserror.SetMalformed(err)
+		}
+
 		// Reuse existing status ID.
 		latestStatus.ID = status.ID
 	}
@@ -649,6 +656,10 @@ func (d *Dereferencer) fetchStatusMentions(
 	err error,
 ) {
 
+	// Get most-recent modified time
+	// for use in new mention ULIDs.
+	updatedAt := status.UpdatedAt()
+
 	// Allocate new slice to take the yet-to-be created mention IDs.
 	status.MentionIDs = make([]string, len(status.Mentions))
 
@@ -684,10 +695,10 @@ func (d *Dereferencer) fetchStatusMentions(
 
 		// This mention didn't exist yet.
 		// Generate new ID according to latest update.
-		mention.ID = id.NewULIDFromTime(status.UpdatedAt)
+		mention.ID = id.NewULIDFromTime(updatedAt)
 
-		// Set known further mention details.
-		mention.CreatedAt = status.UpdatedAt
+		// Set further mention details.
+		mention.CreatedAt = updatedAt
 		mention.OriginAccount = status.Account
 		mention.OriginAccountID = status.AccountID
 		mention.OriginAccountURI = status.AccountURI
@@ -1000,11 +1011,20 @@ func (d *Dereferencer) fetchStatusEmojis(
 	// Set latest emojis.
 	status.Emojis = emojis
 
-	// Iterate over and set changed emoji IDs.
+	// Extract IDs from latest slice of emojis.
 	status.EmojiIDs = make([]string, len(emojis))
 	for i, emoji := range emojis {
 		status.EmojiIDs[i] = emoji.ID
 	}
+
+	// Combine both old and new emojis, as statuses.emojis
+	// keeps track of emojis for both old and current edits.
+	status.EmojiIDs = append(status.EmojiIDs, existing.EmojiIDs...)
+	status.Emojis = append(status.Emojis, existing.Emojis...)
+	status.EmojiIDs = xslices.Deduplicate(status.EmojiIDs)
+	status.Emojis = xslices.DeduplicateFunc(status.Emojis,
+		func(e *gtsmodel.Emoji) string { return e.ID },
+	)
 
 	return true, nil
 }
@@ -1080,8 +1100,12 @@ func (d *Dereferencer) handleStatusPoll(
 func (d *Dereferencer) insertStatusPoll(ctx context.Context, status *gtsmodel.Status) error {
 	var err error
 
-	// Generate new ID for poll from latest updated time.
-	status.Poll.ID = id.NewULIDFromTime(status.UpdatedAt)
+	// Get most-recent modified time
+	// which will be poll creation time.
+	createdAt := status.UpdatedAt()
+
+	// Generate new ID for poll from createdAt.
+	status.Poll.ID = id.NewULIDFromTime(createdAt)
 
 	// Update the status<->poll links.
 	status.PollID = status.Poll.ID
@@ -1117,11 +1141,15 @@ func (d *Dereferencer) handleStatusEdit(
 ) {
 	var edited bool
 
+	// Copy previous status edit columns.
+	status.EditIDs = existing.EditIDs
+	status.Edits = existing.Edits
+
 	// Preallocate max slice length.
-	cols = make([]string, 0, 13)
+	cols = make([]string, 1, 13)
 
 	// Always update `fetched_at`.
-	cols = append(cols, "fetched_at")
+	cols[0] = "fetched_at"
 
 	// Check for edited status content.
 	if existing.Content != status.Content {
@@ -1187,31 +1215,34 @@ func (d *Dereferencer) handleStatusEdit(
 		// Attached emojis changed.
 		cols = append(cols, "emojis") // i.e. EmojiIDs
 
+		// We specifically store both *new* AND *old* edit
+		// revision emojis in the statuses.emojis column.
+		emojiByID := func(e *gtsmodel.Emoji) string { return e.ID }
+		status.Emojis = append(status.Emojis, existing.Emojis...)
+		status.Emojis = xslices.DeduplicateFunc(status.Emojis, emojiByID)
+		status.EmojiIDs = xslices.Gather(status.EmojiIDs[:0], status.Emojis, emojiByID)
+
 		// Emojis changed doesn't necessarily
 		// indicate an edit, it may just not have
 		// been previously populated properly.
 	}
 
 	if edited {
-		// We prefer to use provided 'upated_at', but ensure
-		// it fits chronologically with creation / last update.
-		if !status.UpdatedAt.After(status.CreatedAt) ||
-			!status.UpdatedAt.After(existing.UpdatedAt) {
-
-			// Else fallback to now as update time.
-			status.UpdatedAt = status.FetchedAt
-		}
+		// Get previous-most-recent modified time,
+		// which will be this edit's creation time.
+		createdAt := existing.UpdatedAt()
 
 		// Status has been editted since last
 		// we saw it, take snapshot of existing.
 		var edit gtsmodel.StatusEdit
-		edit.ID = id.NewULIDFromTime(status.UpdatedAt)
+		edit.ID = id.NewULIDFromTime(createdAt)
 		edit.Content = existing.Content
 		edit.ContentWarning = existing.ContentWarning
 		edit.Text = existing.Text
 		edit.Language = existing.Language
 		edit.Sensitive = existing.Sensitive
 		edit.StatusID = status.ID
+		edit.CreatedAt = createdAt
 
 		// Copy existing attachments and descriptions.
 		edit.AttachmentIDs = existing.AttachmentIDs
@@ -1223,14 +1254,12 @@ func (d *Dereferencer) handleStatusEdit(
 			}
 		}
 
-		// Edit creation is last update time.
-		edit.CreatedAt = existing.UpdatedAt
-
 		if existing.Poll != nil {
 			// Poll only set if existing contained them.
 			edit.PollOptions = existing.Poll.Options
 
-			if !*existing.Poll.HideCounts || pollChanged {
+			if pollChanged || !*existing.Poll.HideCounts ||
+				!existing.Poll.ClosedAt.IsZero() {
 				// If the counts are allowed to be
 				// shown, or poll has changed, then
 				// include poll vote counts in edit.
@@ -1247,8 +1276,14 @@ func (d *Dereferencer) handleStatusEdit(
 		status.EditIDs = append(status.EditIDs, edit.ID)
 		status.Edits = append(status.Edits, &edit)
 
-		// Add updated_at and edits to list of cols.
-		cols = append(cols, "updated_at", "edits")
+		// Add edit to list of cols.
+		cols = append(cols, "edits")
+	}
+
+	if !existing.EditedAt.Equal(status.EditedAt) {
+		// Whether status edited or not,
+		// edited_at column has changed.
+		cols = append(cols, "edited_at")
 	}
 
 	return cols, nil

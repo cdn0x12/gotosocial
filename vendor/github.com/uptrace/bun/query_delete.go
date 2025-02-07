@@ -15,6 +15,8 @@ type DeleteQuery struct {
 	whereBaseQuery
 	orderLimitOffsetQuery
 	returningQuery
+
+	comment string
 }
 
 var _ Query = (*DeleteQuery)(nil)
@@ -23,8 +25,7 @@ func NewDeleteQuery(db *DB) *DeleteQuery {
 	q := &DeleteQuery{
 		whereBaseQuery: whereBaseQuery{
 			baseQuery: baseQuery{
-				db:   db,
-				conn: db.DB,
+				db: db,
 			},
 		},
 	}
@@ -56,12 +57,12 @@ func (q *DeleteQuery) Apply(fns ...func(*DeleteQuery) *DeleteQuery) *DeleteQuery
 	return q
 }
 
-func (q *DeleteQuery) With(name string, query schema.QueryAppender) *DeleteQuery {
+func (q *DeleteQuery) With(name string, query Query) *DeleteQuery {
 	q.addWith(name, query, false)
 	return q
 }
 
-func (q *DeleteQuery) WithRecursive(name string, query schema.QueryAppender) *DeleteQuery {
+func (q *DeleteQuery) WithRecursive(name string, query Query) *DeleteQuery {
 	q.addWith(name, query, true)
 	return q
 }
@@ -126,7 +127,7 @@ func (q *DeleteQuery) WhereAllWithDeleted() *DeleteQuery {
 
 func (q *DeleteQuery) Order(orders ...string) *DeleteQuery {
 	if !q.hasFeature(feature.DeleteOrderLimit) {
-		q.err = errors.New("bun: order is not supported for current dialect")
+		q.err = feature.NewNotSupportError(feature.DeleteOrderLimit)
 		return q
 	}
 	q.addOrder(orders...)
@@ -135,7 +136,7 @@ func (q *DeleteQuery) Order(orders ...string) *DeleteQuery {
 
 func (q *DeleteQuery) OrderExpr(query string, args ...interface{}) *DeleteQuery {
 	if !q.hasFeature(feature.DeleteOrderLimit) {
-		q.err = errors.New("bun: order is not supported for current dialect")
+		q.err = feature.NewNotSupportError(feature.DeleteOrderLimit)
 		return q
 	}
 	q.addOrderExpr(query, args...)
@@ -150,7 +151,7 @@ func (q *DeleteQuery) ForceDelete() *DeleteQuery {
 // ------------------------------------------------------------------------------
 func (q *DeleteQuery) Limit(n int) *DeleteQuery {
 	if !q.hasFeature(feature.DeleteOrderLimit) {
-		q.err = errors.New("bun: limit is not supported for current dialect")
+		q.err = feature.NewNotSupportError(feature.DeleteOrderLimit)
 		return q
 	}
 	q.setLimit(n)
@@ -164,11 +165,19 @@ func (q *DeleteQuery) Limit(n int) *DeleteQuery {
 // To suppress the auto-generated RETURNING clause, use `Returning("NULL")`.
 func (q *DeleteQuery) Returning(query string, args ...interface{}) *DeleteQuery {
 	if !q.hasFeature(feature.DeleteReturning) {
-		q.err = errors.New("bun: returning is not supported for current dialect")
+		q.err = feature.NewNotSupportError(feature.DeleteOrderLimit)
 		return q
 	}
 
 	q.addReturning(schema.SafeQuery(query, args))
+	return q
+}
+
+//------------------------------------------------------------------------------
+
+// Comment adds a comment to the query, wrapped by /* ... */.
+func (q *DeleteQuery) Comment(comment string) *DeleteQuery {
+	q.comment = comment
 	return q
 }
 
@@ -182,6 +191,8 @@ func (q *DeleteQuery) AppendQuery(fmter schema.Formatter, b []byte) (_ []byte, e
 	if q.err != nil {
 		return nil, q.err
 	}
+
+	b = appendComment(b, q.comment)
 
 	fmter = formatterWithModel(fmter, q)
 
@@ -201,7 +212,7 @@ func (q *DeleteQuery) AppendQuery(fmter schema.Formatter, b []byte) (_ []byte, e
 		return upd.AppendQuery(fmter, b)
 	}
 
-	withAlias := q.db.features.Has(feature.DeleteTableAlias)
+	withAlias := q.db.HasFeature(feature.DeleteTableAlias)
 
 	b, err = q.appendWith(fmter, b)
 	if err != nil {

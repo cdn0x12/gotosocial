@@ -21,6 +21,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/suite"
@@ -1160,6 +1161,7 @@ func (suite *InternalToFrontendTestSuite) TestHashtagAnywhereFilteredBoostToFron
 func (suite *InternalToFrontendTestSuite) TestMutedStatusToFrontend() {
 	testStatus := suite.testStatuses["admin_account_status_1"]
 	requestingAccount := suite.testAccounts["local_account_1"]
+
 	mutes := usermute.NewCompiledUserMuteList([]*gtsmodel.UserMute{
 		{
 			AccountID:       requestingAccount.ID,
@@ -1167,6 +1169,7 @@ func (suite *InternalToFrontendTestSuite) TestMutedStatusToFrontend() {
 			Notifications:   util.Ptr(false),
 		},
 	})
+
 	_, err := suite.typeconverter.StatusToAPIStatus(
 		context.Background(),
 		testStatus,
@@ -1185,6 +1188,7 @@ func (suite *InternalToFrontendTestSuite) TestMutedReplyStatusToFrontend() {
 	testStatus.InReplyToID = suite.testStatuses["local_account_2_status_1"].ID
 	testStatus.InReplyToAccountID = mutedAccount.ID
 	requestingAccount := suite.testAccounts["local_account_1"]
+
 	mutes := usermute.NewCompiledUserMuteList([]*gtsmodel.UserMute{
 		{
 			AccountID:       requestingAccount.ID,
@@ -1192,11 +1196,46 @@ func (suite *InternalToFrontendTestSuite) TestMutedReplyStatusToFrontend() {
 			Notifications:   util.Ptr(false),
 		},
 	})
+
 	// Populate status so the converter has the account objects it needs for muting.
 	err := suite.db.PopulateStatus(context.Background(), testStatus)
 	if err != nil {
 		suite.FailNow(err.Error())
 	}
+
+	// Convert the status to API format, which should fail.
+	_, err = suite.typeconverter.StatusToAPIStatus(
+		context.Background(),
+		testStatus,
+		requestingAccount,
+		statusfilter.FilterContextHome,
+		nil,
+		mutes,
+	)
+	suite.ErrorIs(err, statusfilter.ErrHideStatus)
+}
+
+func (suite *InternalToFrontendTestSuite) TestMutedBoostStatusToFrontend() {
+	mutedAccount := suite.testAccounts["local_account_2"]
+	testStatus := suite.testStatuses["admin_account_status_1"]
+	testStatus.BoostOfID = suite.testStatuses["local_account_2_status_1"].ID
+	testStatus.BoostOfAccountID = mutedAccount.ID
+	requestingAccount := suite.testAccounts["local_account_1"]
+
+	mutes := usermute.NewCompiledUserMuteList([]*gtsmodel.UserMute{
+		{
+			AccountID:       requestingAccount.ID,
+			TargetAccountID: mutedAccount.ID,
+			Notifications:   util.Ptr(false),
+		},
+	})
+
+	// Populate status so the converter has the account objects it needs for muting.
+	err := suite.db.PopulateStatus(context.Background(), testStatus)
+	if err != nil {
+		suite.FailNow(err.Error())
+	}
+
 	// Convert the status to API format, which should fail.
 	_, err = suite.typeconverter.StatusToAPIStatus(
 		context.Background(),
@@ -1239,7 +1278,7 @@ func (suite *InternalToFrontendTestSuite) TestStatusToFrontendUnknownAttachments
   "muted": false,
   "bookmarked": false,
   "pinned": false,
-  "content": "\u003cp\u003ehi \u003cspan class=\"h-card\"\u003e\u003ca href=\"http://localhost:8080/@admin\" class=\"u-url mention\" rel=\"nofollow noreferrer noopener\" target=\"_blank\"\u003e@\u003cspan\u003eadmin\u003c/span\u003e\u003c/a\u003e\u003c/span\u003e here's some media for ya\u003c/p\u003e\u003chr\u003e\u003cp\u003e\u003ci lang=\"en\"\u003eℹ️ Note from localhost:8080: 2 attachments in this status were not downloaded. Treat the following external links with care:\u003c/i\u003e\u003c/p\u003e\u003cul\u003e\u003cli\u003e\u003ca href=\"http://example.org/fileserver/01HE7Y659ZWZ02JM4AWYJZ176Q/attachment/original/01HE7ZGJYTSYMXF927GF9353KR.svg\" rel=\"nofollow noreferrer noopener\" target=\"_blank\"\u003e01HE7ZGJYTSYMXF927GF9353KR.svg\u003c/a\u003e [SVG line art of a sloth, public domain]\u003c/li\u003e\u003cli\u003e\u003ca href=\"http://example.org/fileserver/01HE7Y659ZWZ02JM4AWYJZ176Q/attachment/original/01HE892Y8ZS68TQCNPX7J888P3.mp3\" rel=\"nofollow noreferrer noopener\" target=\"_blank\"\u003e01HE892Y8ZS68TQCNPX7J888P3.mp3\u003c/a\u003e [Jolly salsa song, public domain.]\u003c/li\u003e\u003c/ul\u003e",
+  "content": "\u003cp\u003ehi \u003cspan class=\"h-card\"\u003e\u003ca href=\"http://localhost:8080/@admin\" class=\"u-url mention\" rel=\"nofollow noreferrer noopener\" target=\"_blank\"\u003e@\u003cspan\u003eadmin\u003c/span\u003e\u003c/a\u003e\u003c/span\u003e here's some media for ya\u003c/p\u003e\u003cdiv class=\"gts-system-message gts-placeholder-attachments\"\u003e\u003chr\u003e\u003cp\u003e\u003ci lang=\"en\"\u003eℹ️ Note from localhost:8080: 2 attachments in this status were not downloaded. Treat the following external links with care:\u003c/i\u003e\u003c/p\u003e\u003cul\u003e\u003cli\u003e\u003ca href=\"http://example.org/fileserver/01HE7Y659ZWZ02JM4AWYJZ176Q/attachment/original/01HE7ZGJYTSYMXF927GF9353KR.svg\" rel=\"nofollow noreferrer noopener\" target=\"_blank\"\u003e01HE7ZGJYTSYMXF927GF9353KR.svg\u003c/a\u003e [SVG line art of a sloth, public domain]\u003c/li\u003e\u003cli\u003e\u003ca href=\"http://example.org/fileserver/01HE7Y659ZWZ02JM4AWYJZ176Q/attachment/original/01HE892Y8ZS68TQCNPX7J888P3.mp3\" rel=\"nofollow noreferrer noopener\" target=\"_blank\"\u003e01HE892Y8ZS68TQCNPX7J888P3.mp3\u003c/a\u003e [Jolly salsa song, public domain.]\u003c/li\u003e\u003c/ul\u003e\u003c/div\u003e",
   "reblog": null,
   "account": {
     "id": "01FHMQX3GAABWSM0S2VZEC2SWC",
@@ -1789,7 +1828,7 @@ func (suite *InternalToFrontendTestSuite) TestStatusToAPIStatusPendingApproval()
   "muted": false,
   "bookmarked": false,
   "pinned": false,
-  "content": "<p>Hi <span class=\"h-card\"><a href=\"http://localhost:8080/@1happyturtle\" class=\"u-url mention\" rel=\"nofollow noreferrer noopener\" target=\"_blank\">@<span>1happyturtle</span></a></span>, can I reply?</p><hr><p><i lang=\"en\">ℹ️ Note from localhost:8080: This reply is pending your approval. You can quickly accept it by liking, boosting or replying to it. You can also accept or reject it at the following link: <a href=\"http://localhost:8080/settings/user/interaction_requests/01J5QVXCCEATJYSXM9H6MZT4JR\" rel=\"noreferrer noopener nofollow\" target=\"_blank\">http://localhost:8080/settings/user/interaction_requests/01J5QVXCCEATJYSXM9H6MZT4JR</a>.</i></p>",
+  "content": "<p>Hi <span class=\"h-card\"><a href=\"http://localhost:8080/@1happyturtle\" class=\"u-url mention\" rel=\"nofollow noreferrer noopener\" target=\"_blank\">@<span>1happyturtle</span></a></span>, can I reply?</p><div class=\"gts-system-message gts-pending-reply\"><hr><p><i lang=\"en\">ℹ️ Note from localhost:8080: This reply is pending your approval. You can quickly accept it by liking, boosting or replying to it. You can also accept or reject it at the following link: <a href=\"http://localhost:8080/settings/user/interaction_requests/01J5QVXCCEATJYSXM9H6MZT4JR\" rel=\"noreferrer noopener nofollow\" target=\"_blank\">http://localhost:8080/settings/user/interaction_requests/01J5QVXCCEATJYSXM9H6MZT4JR</a>.</i></p></div>",
   "reblog": null,
   "application": {
     "name": "superseriousbusiness",
@@ -1960,6 +1999,7 @@ func (suite *InternalToFrontendTestSuite) TestInstanceV1ToFrontend() {
         "image/webp",
         "audio/mp2",
         "audio/mp3",
+        "audio/mpeg",
         "video/x-msvideo",
         "audio/flac",
         "audio/x-flac",
@@ -2060,6 +2100,13 @@ func (suite *InternalToFrontendTestSuite) TestInstanceV2ToFrontend() {
 	b, err := json.MarshalIndent(instance, "", "  ")
 	suite.NoError(err)
 
+	// The VAPID public key changes from run to run.
+	vapidKeyPair, err := suite.db.GetVAPIDKeyPair(ctx)
+	if err != nil {
+		suite.FailNow(err.Error())
+	}
+	s := strings.Replace(string(b), vapidKeyPair.Public, "VAPID_PUBLIC_KEY_PLACEHOLDER", 1)
+
 	suite.Equal(`{
   "domain": "localhost:8080",
   "account_domain": "localhost:8080",
@@ -2105,6 +2152,7 @@ func (suite *InternalToFrontendTestSuite) TestInstanceV2ToFrontend() {
         "image/webp",
         "audio/mp2",
         "audio/mp3",
+        "audio/mpeg",
         "video/x-msvideo",
         "audio/flac",
         "audio/x-flac",
@@ -2138,6 +2186,9 @@ func (suite *InternalToFrontendTestSuite) TestInstanceV2ToFrontend() {
     },
     "emojis": {
       "emoji_size_limit": 51200
+    },
+    "vapid": {
+      "public_key": "VAPID_PUBLIC_KEY_PLACEHOLDER"
     }
   },
   "registrations": {
@@ -2182,7 +2233,7 @@ func (suite *InternalToFrontendTestSuite) TestInstanceV2ToFrontend() {
   "rules": [],
   "terms": "\u003cp\u003eThis is where a list of terms and conditions might go.\u003c/p\u003e\u003cp\u003eFor example:\u003c/p\u003e\u003cp\u003eIf you want to sign up on this instance, you oughta know that we:\u003c/p\u003e\u003col\u003e\u003cli\u003eWill sell your data to whoever offers.\u003c/li\u003e\u003cli\u003eSecure the server with password \u003ccode\u003epassword\u003c/code\u003e wherever possible.\u003c/li\u003e\u003c/ol\u003e",
   "terms_text": "This is where a list of terms and conditions might go.\n\nFor example:\n\nIf you want to sign up on this instance, you oughta know that we:\n\n1. Will sell your data to whoever offers.\n2. Secure the server with password `+"`"+`password`+"`"+` wherever possible."
-}`, string(b))
+}`, s)
 }
 
 func (suite *InternalToFrontendTestSuite) TestEmojiToFrontend() {
@@ -3735,6 +3786,136 @@ func (suite *InternalToFrontendTestSuite) TestConversationToAPI() {
     }
   }
 }`, string(b))
+}
+
+func (suite *InternalToFrontendTestSuite) TestStatusToAPIEdits() {
+	ctx, cncl := context.WithCancel(context.Background())
+	defer cncl()
+
+	statusID := suite.testStatuses["local_account_1_status_9"].ID
+
+	status, err := suite.state.DB.GetStatusByID(ctx, statusID)
+	suite.NoError(err)
+
+	err = suite.state.DB.PopulateStatusEdits(ctx, status)
+	suite.NoError(err)
+
+	apiEdits, err := suite.typeconverter.StatusToAPIEdits(ctx, status)
+	suite.NoError(err)
+
+	b, err := json.MarshalIndent(apiEdits, "", "    ")
+	suite.NoError(err)
+
+	suite.Equal(`[
+    {
+        "content": "\u003cp\u003ethis is the latest revision of the status, with a content-warning\u003c/p\u003e",
+        "spoiler_text": "edited status",
+        "sensitive": false,
+        "created_at": "2024-11-01T09:02:00.000Z",
+        "account": {
+            "id": "01F8MH1H7YV1Z7D2C8K2730QBF",
+            "username": "the_mighty_zork",
+            "acct": "the_mighty_zork",
+            "display_name": "original zork (he/they)",
+            "locked": false,
+            "discoverable": true,
+            "bot": false,
+            "created_at": "2022-05-20T11:09:18.000Z",
+            "note": "\u003cp\u003ehey yo this is my profile!\u003c/p\u003e",
+            "url": "http://localhost:8080/@the_mighty_zork",
+            "avatar": "http://localhost:8080/fileserver/01F8MH1H7YV1Z7D2C8K2730QBF/avatar/original/01F8MH58A357CV5K7R7TJMSH6S.jpg",
+            "avatar_static": "http://localhost:8080/fileserver/01F8MH1H7YV1Z7D2C8K2730QBF/avatar/small/01F8MH58A357CV5K7R7TJMSH6S.webp",
+            "avatar_description": "a green goblin looking nasty",
+            "avatar_media_id": "01F8MH58A357CV5K7R7TJMSH6S",
+            "header": "http://localhost:8080/fileserver/01F8MH1H7YV1Z7D2C8K2730QBF/header/original/01PFPMWK2FF0D9WMHEJHR07C3Q.jpg",
+            "header_static": "http://localhost:8080/fileserver/01F8MH1H7YV1Z7D2C8K2730QBF/header/small/01PFPMWK2FF0D9WMHEJHR07C3Q.webp",
+            "header_description": "A very old-school screenshot of the original team fortress mod for quake",
+            "header_media_id": "01PFPMWK2FF0D9WMHEJHR07C3Q",
+            "followers_count": 2,
+            "following_count": 2,
+            "statuses_count": 9,
+            "last_status_at": "2024-11-01",
+            "emojis": [],
+            "fields": [],
+            "enable_rss": true
+        },
+        "poll": null,
+        "media_attachments": [],
+        "emojis": []
+    },
+    {
+        "content": "\u003cp\u003ethis is the first status edit! now with content-warning\u003c/p\u003e",
+        "spoiler_text": "edited status",
+        "sensitive": false,
+        "created_at": "2024-11-01T09:01:00.000Z",
+        "account": {
+            "id": "01F8MH1H7YV1Z7D2C8K2730QBF",
+            "username": "the_mighty_zork",
+            "acct": "the_mighty_zork",
+            "display_name": "original zork (he/they)",
+            "locked": false,
+            "discoverable": true,
+            "bot": false,
+            "created_at": "2022-05-20T11:09:18.000Z",
+            "note": "\u003cp\u003ehey yo this is my profile!\u003c/p\u003e",
+            "url": "http://localhost:8080/@the_mighty_zork",
+            "avatar": "http://localhost:8080/fileserver/01F8MH1H7YV1Z7D2C8K2730QBF/avatar/original/01F8MH58A357CV5K7R7TJMSH6S.jpg",
+            "avatar_static": "http://localhost:8080/fileserver/01F8MH1H7YV1Z7D2C8K2730QBF/avatar/small/01F8MH58A357CV5K7R7TJMSH6S.webp",
+            "avatar_description": "a green goblin looking nasty",
+            "avatar_media_id": "01F8MH58A357CV5K7R7TJMSH6S",
+            "header": "http://localhost:8080/fileserver/01F8MH1H7YV1Z7D2C8K2730QBF/header/original/01PFPMWK2FF0D9WMHEJHR07C3Q.jpg",
+            "header_static": "http://localhost:8080/fileserver/01F8MH1H7YV1Z7D2C8K2730QBF/header/small/01PFPMWK2FF0D9WMHEJHR07C3Q.webp",
+            "header_description": "A very old-school screenshot of the original team fortress mod for quake",
+            "header_media_id": "01PFPMWK2FF0D9WMHEJHR07C3Q",
+            "followers_count": 2,
+            "following_count": 2,
+            "statuses_count": 9,
+            "last_status_at": "2024-11-01",
+            "emojis": [],
+            "fields": [],
+            "enable_rss": true
+        },
+        "poll": null,
+        "media_attachments": [],
+        "emojis": []
+    },
+    {
+        "content": "\u003cp\u003ethis is the original status\u003c/p\u003e",
+        "spoiler_text": "",
+        "sensitive": false,
+        "created_at": "2024-11-01T09:00:00.000Z",
+        "account": {
+            "id": "01F8MH1H7YV1Z7D2C8K2730QBF",
+            "username": "the_mighty_zork",
+            "acct": "the_mighty_zork",
+            "display_name": "original zork (he/they)",
+            "locked": false,
+            "discoverable": true,
+            "bot": false,
+            "created_at": "2022-05-20T11:09:18.000Z",
+            "note": "\u003cp\u003ehey yo this is my profile!\u003c/p\u003e",
+            "url": "http://localhost:8080/@the_mighty_zork",
+            "avatar": "http://localhost:8080/fileserver/01F8MH1H7YV1Z7D2C8K2730QBF/avatar/original/01F8MH58A357CV5K7R7TJMSH6S.jpg",
+            "avatar_static": "http://localhost:8080/fileserver/01F8MH1H7YV1Z7D2C8K2730QBF/avatar/small/01F8MH58A357CV5K7R7TJMSH6S.webp",
+            "avatar_description": "a green goblin looking nasty",
+            "avatar_media_id": "01F8MH58A357CV5K7R7TJMSH6S",
+            "header": "http://localhost:8080/fileserver/01F8MH1H7YV1Z7D2C8K2730QBF/header/original/01PFPMWK2FF0D9WMHEJHR07C3Q.jpg",
+            "header_static": "http://localhost:8080/fileserver/01F8MH1H7YV1Z7D2C8K2730QBF/header/small/01PFPMWK2FF0D9WMHEJHR07C3Q.webp",
+            "header_description": "A very old-school screenshot of the original team fortress mod for quake",
+            "header_media_id": "01PFPMWK2FF0D9WMHEJHR07C3Q",
+            "followers_count": 2,
+            "following_count": 2,
+            "statuses_count": 9,
+            "last_status_at": "2024-11-01",
+            "emojis": [],
+            "fields": [],
+            "enable_rss": true
+        },
+        "poll": null,
+        "media_attachments": [],
+        "emojis": []
+    }
+]`, string(b))
 }
 
 func TestInternalToFrontendTestSuite(t *testing.T) {
