@@ -183,13 +183,13 @@ Array.from(document.getElementsByClassName("plyr-video")).forEach((video) => {
 });
 
 document.addEventListener('DOMContentLoaded', () => {
-    const timeTags = document.getElementsByTagName('time');
-    Array.from(timeTags).forEach(timeTag => {
-        const datetime = timeTag.getAttribute('datetime');
-        const currentText = timeTag.textContent.trim();
-        // Only format if current text contains precise time
-        if (currentText.match(/\d{2}:\d{2}/)) {
-            timeTag.textContent = new Date(datetime).toLocaleString();
-        }
-    });
+	const timeTags = document.getElementsByTagName('time');
+	Array.from(timeTags).forEach(timeTag => {
+		const datetime = timeTag.getAttribute('datetime');
+		const currentText = timeTag.textContent.trim();
+		// Only format if current text contains precise time
+		if (currentText.match(/\d{2}:\d{2}/)) {
+			timeTag.textContent = new Date(datetime).toLocaleString();
+		}
+	});
 });
